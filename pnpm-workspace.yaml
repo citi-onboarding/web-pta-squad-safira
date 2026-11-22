@@ -1,0 +1,9 @@
+# pnpm reads its project settings from this file (pnpm >= 12), not from the
+# "pnpm" field in package.json. Dependency build scripts are opt-in: add an
+# entry here with `pnpm approve-builds` instead of allowing every script.
+allowBuilds:
+  # Only prints a shell-completion tip after installing.
+  "@fission-ai/openspec": false
+  # Copies the service worker into the public directory when
+  # "msw.workerDirectory" is set in package.json.
+  msw: true

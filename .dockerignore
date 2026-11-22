@@ -1,0 +1,13 @@
+.dockerignore
+.git
+.github
+.husky
+coverage
+dist
+Dockerfile
+node_modules
+npm-debug.log*
+.pnpm-debug.log*
+.pnpm-store
+.env*
+!.env.example
