@@ -1,0 +1,3 @@
+# High-risk code: every change needs Project Manager review.
+/.github/ @safiragomes
+/src/features/auth/ @safiragomes
