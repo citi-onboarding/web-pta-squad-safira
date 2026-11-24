@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  VITE_APP_NAME: z.string().trim().min(1).default("Vite Boilerplate"),
+  VITE_APP_NAME: z
+    .string()
+    .trim()
+    .min(1)
+    .default("DistriLux Portal de Pedidos"),
   VITE_APP_URL: z.url().default("http://localhost:5173"),
   VITE_API_URL: z.url().default("http://localhost:3001"),
 });
