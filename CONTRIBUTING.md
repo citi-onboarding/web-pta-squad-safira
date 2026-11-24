@@ -28,8 +28,8 @@ denied.
 Clone the repository and install the locked dependencies:
 
 ```bash
-git clone https://github.com/gabrielrlc/vite-boilerplate.git
-cd vite-boilerplate
+git clone https://github.com/citi-onboarding/web-pta-squad-safira.git
+cd web-pta-squad-safira
 pnpm install --frozen-lockfile
 cp .env.example .env.local
 ```
@@ -40,7 +40,7 @@ Start development with:
 pnpm dev
 ```
 
-Do not run `pnpm init:project` when contributing to the boilerplate itself. That command is intended for repositories created from this template.
+Do not run `pnpm init:project`: this repository was already initialized as DistriLux Portal. See the README for Windows notes.
 
 ## Agent skills
 
