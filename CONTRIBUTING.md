@@ -137,13 +137,14 @@ pull request cannot be merged until they are met:
   date with its target. Do not skip or disable checks.
 - Resolve every review conversation before merging. A new commit dismisses
   earlier approvals, so ask for a fresh review.
+- Changes to the paths in `.github/CODEOWNERS` (high-risk code, such as
+  `.github/` and, in the backend, `prisma/`) also need the listed code owner's
+  approval. GitHub requires it, so another developer's approval is not enough
+  for those paths.
 - Force pushes and branch deletion are blocked.
 
 These rules are agreed by the team, because GitHub does not enforce them:
 
-- Changes under `.github/` and the paths in `.github/CODEOWNERS` also need the
-  listed code owner's review, even though the owner's approval is not required
-  to merge.
 - Repository admins can bypass the protection. Do not use that to merge your
   own work without a review.
 - Prefer squash merge for feature branches. Use a merge commit when syncing
