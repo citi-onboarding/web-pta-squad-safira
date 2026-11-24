@@ -1,4 +1,4 @@
-# Vite Boilerplate
+# DistriLux Portal de Pedidos
 
 A scalable foundation for React single-page applications that consume external APIs. The repository enforces architectural boundaries while providing routing, server-state management, testing, CI, and production-ready static delivery.
 
@@ -60,11 +60,11 @@ Read [docs/architecture.md](docs/architecture.md) for the rules and [docs/boiler
 
 All frontend environment values are public and embedded during `vite build`:
 
-| Variable        | Default                 | Purpose                        |
-| --------------- | ----------------------- | ------------------------------ |
-| `VITE_APP_NAME` | `Vite Boilerplate`      | Browser title and display name |
-| `VITE_APP_URL`  | `http://localhost:5173` | Public application URL         |
-| `VITE_API_URL`  | `http://localhost:3001` | pta-api base URL (no path)     |
+| Variable        | Default                       | Purpose                        |
+| --------------- | ----------------------------- | ------------------------------ |
+| `VITE_APP_NAME` | `DistriLux Portal de Pedidos` | Browser title and display name |
+| `VITE_APP_URL`  | `http://localhost:5173`       | Public application URL         |
+| `VITE_API_URL`  | `http://localhost:3001`       | pta-api base URL (no path)     |
 
 Never store secrets in `VITE_*` variables. Private keys, privileged credentials, HTTP-only cookie handling, and other protected behavior belong in the backend.
 
