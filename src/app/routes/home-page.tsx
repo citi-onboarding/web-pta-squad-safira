@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
 
-// BEGIN EXAMPLE FEATURE IMPORT
-import { ApiEndpoint } from "@/features/example/components/api-endpoint";
-import { ExampleCard } from "@/features/example/components/example-card";
-// END EXAMPLE FEATURE IMPORT
-
 export function HomePage() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-center px-6 py-20 sm:px-10">
@@ -21,20 +16,6 @@ export function HomePage() {
           boundaries, tests, CI, and production-ready static delivery.
         </p>
       </div>
-
-      {/* BEGIN EXAMPLE FEATURE */}
-      <div className="mt-12 max-w-xl">
-        <ExampleCard
-          example={{
-            id: "example-1",
-            name: "Feature-based architecture",
-            description:
-              "Compose independent features from the app layer and keep shared code dependency-free.",
-          }}
-        />
-        <ApiEndpoint />
-      </div>
-      {/* END EXAMPLE FEATURE */}
 
       <div className="mt-10 flex flex-wrap gap-4 text-sm font-medium">
         <a

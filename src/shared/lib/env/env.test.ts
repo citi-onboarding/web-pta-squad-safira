@@ -7,7 +7,7 @@ describe("environment", () => {
   it("uses safe public defaults", () => {
     expect(env.VITE_API_URL).toBe("http://localhost:3001");
     expect(parseEnvironment({})).toEqual({
-      VITE_APP_NAME: "Vite Boilerplate",
+      VITE_APP_NAME: "DistriLux Portal de Pedidos",
       VITE_APP_URL: "http://localhost:5173",
       VITE_API_URL: "http://localhost:3001",
     });
