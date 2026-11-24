@@ -28,8 +28,8 @@ denied.
 Clone the repository and install the locked dependencies:
 
 ```bash
-git clone https://github.com/gabrielrlc/vite-boilerplate.git
-cd vite-boilerplate
+git clone https://github.com/citi-onboarding/web-pta-squad-safira.git
+cd web-pta-squad-safira
 pnpm install --frozen-lockfile
 cp .env.example .env.local
 ```
@@ -40,7 +40,7 @@ Start development with:
 pnpm dev
 ```
 
-Do not run `pnpm init:project` when contributing to the boilerplate itself. That command is intended for repositories created from this template.
+Do not run `pnpm init:project`: this repository was already initialized as DistriLux Portal. See the README for Windows notes.
 
 ## Agent skills
 
@@ -123,3 +123,29 @@ Complete the pull request template with:
 - Compatibility, migration, and rollback considerations
 
 Keep generated files, lockfile changes, and documentation synchronized with the implementation. CI must pass before merge.
+
+## Merge rules
+
+The protected branches are `main` and `develop`. GitHub enforces most of these rules, so a
+pull request cannot be merged until they are met:
+
+- Open a pull request; never push directly to a protected branch.
+- At least one approval from another squad member is required. Authors cannot
+  approve their own pull request. Developers review each other; the Project
+  Manager is not the only reviewer.
+- The `CI` workflow (job `Format, verify, and build`) must pass, and the branch must be up to
+  date with its target. Do not skip or disable checks.
+- Resolve every review conversation before merging. A new commit dismisses
+  earlier approvals, so ask for a fresh review.
+- Changes to the paths in `.github/CODEOWNERS` (high-risk code, such as
+  `.github/` and, in the backend, `prisma/`) also need the listed code owner's
+  approval. GitHub requires it, so another developer's approval is not enough
+  for those paths.
+- Force pushes and branch deletion are blocked.
+
+These rules are agreed by the team, because GitHub does not enforce them:
+
+- Repository admins can bypass the protection. Do not use that to merge your
+  own work without a review.
+- Prefer squash merge for feature branches. Use a merge commit when syncing
+  `main` into `develop`, so both histories stay aligned.
