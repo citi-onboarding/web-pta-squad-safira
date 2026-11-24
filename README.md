@@ -23,24 +23,28 @@ A scalable foundation for React single-page applications that consume external A
 - pnpm 12 or later (enable it with `corepack enable`)
 - Docker for container validation
 
-## Start a project
-
-After creating a repository from this template:
+## Local setup
 
 ```bash
+git clone https://github.com/citi-onboarding/web-pta-squad-safira.git
+cd web-pta-squad-safira
 pnpm install --frozen-lockfile
-pnpm init:project --name "Operations Console"
-pnpm dev
-```
-
-The initializer changes package and application names, creates `.env.local`, removes the example feature, and refuses to run twice. Development is available at [http://localhost:5173](http://localhost:5173).
-
-To work on the boilerplate itself, skip `init:project` and copy the environment file manually:
-
-```bash
 cp .env.example .env.local
 pnpm dev
 ```
+
+Development is available at [http://localhost:5173](http://localhost:5173).
+Point `VITE_API_URL` at the backend API. Before opening a pull request, run
+`pnpm format:check`, `pnpm verify`, and `pnpm build`.
+
+### Windows notes
+
+- Use pnpm 12 for this repository. If `pnpm --version` prints an older major, or
+  a commit hook fails with `pnpm` not recognized, install it once with
+  `npm install -g pnpm@12.5.1` (or run `corepack enable` from an administrator
+  terminal) and open a new terminal.
+- Docker Desktop must be running before `docker compose` or the integration
+  tests.
 
 ## Architecture
 
