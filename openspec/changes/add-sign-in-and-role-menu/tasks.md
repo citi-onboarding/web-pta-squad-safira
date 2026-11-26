@@ -9,10 +9,10 @@
 - [x] 2.1 Write unit tests for the contract and API calls: `login`, `getSession` (user and 401 → `null`), and `logout` send the right relative paths and validate responses with the Zod schemas
 - [x] 2.2 Write unit tests for the sign-in form: fields, texts, required fields block the request, in-progress button, and "E-mail ou senha incorretos" on 401
 - [x] 2.3 Write unit tests for the role table: menu entries and initial page of each of the four roles
-- [ ] 2.4 Write unit tests for routing: no session → sign-in screen; return to the requested page after sign-in; initial page per role; access denied message for a page outside the role
+- [x] 2.4 Write unit tests for routing: no session → sign-in screen; return to the requested page after sign-in; initial page per role; access denied message for a page outside the role
 - [x] 2.4.1 Route guards inside the feature: no session → sign-in screen keeping the requested page, nothing shown while the session is unknown, access denied for a page outside the role
-- [ ] 2.5 Write unit tests for the app shell: each role sees exactly its menu and "Sair"; "Sair" calls the back end, clears the cache, and shows the sign-in screen; going back after sign-out shows the sign-in screen
-- [ ] 2.7 Run `pnpm test` and confirm every new test fails for the expected reason
+- [x] 2.5 Write unit tests for the app shell: each role sees exactly its menu and "Sair"; "Sair" calls the back end, clears the cache, and shows the sign-in screen; going back after sign-out shows the sign-in screen
+- [x] 2.7 Run `pnpm test` and confirm every new test fails for the expected reason
 
 ## 3. Green (minimal production code)
 
@@ -22,13 +22,14 @@
 - [x] 3.3 Add `types/role-access.ts`
 - [x] 3.4 Add `components/login-form.tsx`, `components/protected-route.tsx`, the role check, and the access-denied message
 - [x] 3.4.1 Add `components/access-denied.tsx` and `components/role-route.tsx` (the role check)
-- [ ] 3.5 Add `src/app/routes/login-page.tsx`, the five placeholder pages, and `src/app/layout/app-shell.tsx`, and update `src/app/router.tsx` (the only existing file changed)
-- [ ] 3.6 Run `pnpm test` until every test passes
+- [x] 3.5 Add `src/app/routes/login-page.tsx`, the five placeholder pages, and `src/app/layout/app-shell.tsx`, and update `src/app/router.tsx` (the only existing file changed)
+- [x] 3.5.1 Add `src/features/auth/components/auth-root.tsx` (creates the credentialed client once, when the routes mount; a client created at module load would keep the original `fetch`) and `src/features/auth/queries/sign-out-mutation.ts` (`useSignOut`: calls the back end, then clears the query cache)
+- [x] 3.6 Run `pnpm test` until every test passes
 
 ## 4. Refactor
 
-- [ ] 4.1 Improve names, remove duplication, and keep each component render-only, with every test still green
-- [ ] 4.2 Run `pnpm typecheck` and `pnpm lint`
+- [x] 4.1 Improve names, remove duplication, and keep each component render-only, with every test still green
+- [x] 4.2 Run `pnpm typecheck` and `pnpm lint`
 
 ## 5. End to end
 
