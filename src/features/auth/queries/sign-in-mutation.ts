@@ -12,6 +12,8 @@ export function useSignIn() {
   return useMutation({
     mutationFn: (credentials: Credentials) => login(client, credentials),
     onSuccess: (session) => {
+      // Drop anything kept from a previous session that ended without "Sair".
+      queryClient.clear();
       queryClient.setQueryData(sessionQueryKey, session);
     },
   });

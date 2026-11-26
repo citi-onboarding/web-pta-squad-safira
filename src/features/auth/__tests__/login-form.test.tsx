@@ -142,4 +142,26 @@ describe("LoginForm", () => {
       sessionsByRole.VENDEDOR,
     );
   });
+
+  it("discards responses kept from a previous session when a sign-in succeeds", async () => {
+    server.use(
+      http.post(`${API_URL}/auth/login`, () =>
+        HttpResponse.json(sessionsByRole.VENDEDOR),
+      ),
+    );
+    const onSignedIn = vi.fn();
+    const { queryClient } = renderWithAuth(
+      <LoginForm onSignedIn={onSignedIn} />,
+    );
+    const previousKey = ["previous-user-data"];
+    queryClient.setQueryData(previousKey, { owner: "previous user" });
+
+    await fillAndSubmit(EMAIL, PASSWORD);
+
+    await waitFor(() => expect(onSignedIn).toHaveBeenCalled());
+    expect(queryClient.getQueryData(previousKey)).toBeUndefined();
+    expect(queryClient.getQueryData(sessionQueryKey)).toEqual(
+      sessionsByRole.VENDEDOR,
+    );
+  });
 });

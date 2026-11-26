@@ -19,7 +19,7 @@ Give the portal its entry point: staff sign in with email and password, each rol
 - New `src/features/auth/` feature:
   - `types/session.ts`: Zod schemas for the role, the session (`{ id, nome, papel }`), and the credentials (`{ email, senha }`), copied from the BACK-01 `openapi.json`.
   - `api/login.ts`, `api/get-session.ts` (a 401 becomes `null`), `api/logout.ts`, and `api/auth-api-client.ts` (`credentials: "include"`, so the session cookie travels between `localhost:5173` and `localhost:3001`).
-  - `queries/session-query.ts` (`useSessao`, key `["auth", "session"]`, no retry), `queries/sign-in-mutation.ts`, and `queries/sign-out-mutation.ts` (logs out, then clears the whole query cache).
+  - `queries/session-query.ts` (`useSessao`, key `["auth", "session"]`, no retry), `queries/sign-in-mutation.ts` (on success, clears the whole query cache and then keeps the new user), and `queries/sign-out-mutation.ts` (logs out, then clears the whole query cache).
   - `types/role-access.ts`: one table with each role's menu entries; the first entry is the initial page, and the entries are the only addresses the role may open.
   - `components/`: `login-form.tsx`, `protected-route.tsx`, `role-route.tsx`, `access-denied.tsx`, `auth-root.tsx`, and the API client context and provider.
 - New in `src/app/`: `routes/login-page.tsx`, `layout/app-shell.tsx`, and five placeholder pages (`clients-page.tsx`, `my-orders-page.tsx`, `sales-dashboard-page.tsx`, `finance-queue-page.tsx`, `users-page.tsx`) that show only their title.
@@ -29,6 +29,7 @@ Give the portal its entry point: staff sign in with email and password, each rol
 ## Resulting behavior
 
 - `/entrar` shows the logo, "Entrar no portal", "Use o e-mail e a senha da DistriLux.", the required "E-mail" and "Senha" fields, and the "Entrar" button.
+- A successful sign-in discards every response kept from before it, so data from a session that ended without "Sair" (expired, or another person on the same browser) is never shown.
 - While signing in, the button is disabled and marked busy; a 401 shows "E-mail ou senha incorretos" without saying which field was wrong.
 - After signing in, the user goes to the page requested before signing in or, if none, to the role's initial page: VENDEDOR → Clientes, GERENTE → Painel do comercial, FINANCEIRO → Fila do financeiro, ADMINISTRADOR → Usuários (provisional).
 - The menu lists only the role's entries and "Sair".
@@ -48,11 +49,11 @@ Give the portal its entry point: staff sign in with email and password, each rol
 Run on 2026-11-25 on branch `feat/loginAndRoleMenu`:
 
 - `pnpm format:check`: all files use Prettier code style.
-- `pnpm verify` (typecheck, lint, tests, `openspec validate --all --strict`, skills check): passed; 24 test files, 105 tests; OpenSpec 1 passed, 0 failed.
-- `pnpm test:coverage`: 105 tests passed; all files 98.24% statements, 92.59% branches, 98.68% functions, 98.22% lines. Uncovered lines in this change are defensive guards: the missing-provider error in `auth-api-client-context.ts`, the second-submit guard in `login-form.tsx`, the no-session guard in `role-route.tsx`, and the non-restored `pageshow` branch in `auth-root.tsx`.
+- `pnpm verify` (typecheck, lint, tests, `openspec validate --all --strict`, skills check): passed; 24 test files, 106 tests; OpenSpec 1 passed, 0 failed.
+- `pnpm test:coverage`: 106 tests passed; all files 98.25% statements, 92.59% branches, 98.68% functions, 98.23% lines. Uncovered lines in this change are defensive guards: the missing-provider error in `auth-api-client-context.ts`, the second-submit guard in `login-form.tsx`, the no-session guard in `role-route.tsx`, and the non-restored `pageshow` branch in `auth-root.tsx`.
 - `pnpm build`: passed.
 - `pnpm test:e2e`: 10 passed (7 new sign-in tests with axe, 3 existing).
-- Manual check against the real BACK-01 back end (branch `feat/authAndUsers`) with the four seeded users: each reached the right initial page and menu; access denied, wrong password, sign-out with one and two browser back presses, and reload all behaved as specified. Screenshots of the error and loading states are attached to the pull request.
+- Manual check against the real BACK-01 back end (branch `feat/authAndUsers`) with the four seeded users: each reached the right initial page and menu; access denied, wrong password, sign-out with one and two browser back presses, and reload all behaved as specified. Screenshots of the error and loading states were captured, to be attached when the pull request is opened.
 
 ## Related artifacts
 
@@ -74,11 +75,12 @@ Run on 2026-11-25 on branch `feat/loginAndRoleMenu`:
 - Create API clients inside components or tests, never at module load: the client keeps the `fetch` it sees when created, so a module-level client ignores MSW in tests.
 - An address is allowed only when it matches a menu entry exactly; a future detail page such as `/clientes/123` needs that rule widened by the task that adds it.
 - Visuals are minimal until the design system (FRONT-02).
-- Open questions for the squad manager, with the provisional behavior in parentheses:
+- Open questions for the squad manager, numbered as in `proposal.md`, with the provisional behavior in parentheses:
   1. Initial page of ADMINISTRADOR: "Usuários" or "Sincronização" (Usuários).
   2. Placeholder destination pages (title only).
   3. Signed-in user opening `/entrar` (the sign-in screen is shown).
-  4. Back end unreachable or non-401 sign-in error (the button returns to normal, no message).
+  4. Errors other than 401 or no connection (no message on the sign-in screen, including a 400 for `patricia@distrilux`; a failed `GET /auth/me` sends the user to the sign-in screen).
   5. Credentialed API client as the default for every feature (only in `auth`).
   6. End-to-end tests with the API simulated by `page.route` (done this way).
   7. What `/` should show (the boilerplate page, unchanged).
+  8. "Sair" failing (the user stays on the page, no message).

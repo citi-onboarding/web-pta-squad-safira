@@ -34,11 +34,16 @@ The portal has no entry point: nobody can sign in, and no page knows who the use
 
 ### Open questions (waiting for the squad manager)
 
-1. Initial page of ADMINISTRADOR: FRONT-01 says "Usuários" in one place and "TI para a sincronização" in another; the prototype opens on "Usuários". Provisionally "Usuários" until answered.
+This is the single numbered list; `design.md` and `docs/changes/add-sign-in-and-role-menu.md` refer to these numbers.
+
+1. Initial page of ADMINISTRADOR: FRONT-01 says "Usuários" in one place and "TI para a sincronização" in another; the prototype opens on "Usuários". Provisionally "Usuários".
 2. Whether temporary placeholder pages may stand in for destination screens that do not exist yet. Provisionally, each destination is a page showing only its title, to be replaced by the task that owns it.
-3. What a signed-in user sees when opening the sign-in screen. Not specified until answered.
-4. What the sign-in screen shows when the back end is unreachable or answers with an error other than 401. Not specified until answered.
-5. What `/` should show. It still shows the boilerplate example page, public, because FRONT-01 does not mention it and only explicit or indispensable changes are made to existing files.
+3. What a signed-in user sees when opening the sign-in screen. Provisionally, the sign-in screen is shown normally.
+4. What the portal shows when the back end answers with an error other than 401 or cannot be reached. FRONT-01 only defines the credential error. Provisionally: on the sign-in screen the button returns to normal and no message appears (this includes a 400 for an email the browser accepts but the back end rejects, such as `patricia@distrilux`, a 429, a 500, or no connection); on a protected page, a failed `GET /auth/me` sends the user to the sign-in screen.
+5. Whether the credentialed API client (`credentials: "include"`) should be the default for every feature. Provisionally, only the `auth` feature creates one; another feature can create its own the same way.
+6. Whether end-to-end tests may simulate the API with `page.route`. Provisionally, yes.
+7. What `/` should show. Provisionally, the boilerplate example page, unchanged and public, because FRONT-01 does not mention it and only explicit or indispensable changes are made to existing files.
+8. What happens when "Sair" fails (no connection, 429). FRONT-01 only says it calls `/auth/logout` and clears the cache. Provisionally, the user stays on the page with no message.
 
 ### Decisions already taken
 

@@ -1,7 +1,7 @@
 ## 1. SDD
 
 - [x] 1.1 Write `proposal.md`, `specs/auth/spec.md`, and `design.md`, and run `pnpm exec openspec validate add-sign-in-and-role-menu --strict`
-- [ ] 1.2 Send the open questions (administrator home, placeholder pages, signed-in user on `/entrar`, non-401 sign-in failures, shared credentialed client, what `/` shows) to the squad manager and update the change with each answer before the related code is written
+- [ ] 1.2 Send the open questions 1 to 8 of `proposal.md` to the squad manager. The code follows the provisional behavior recorded there; update the change (and the code, when an answer differs) as answers arrive
 - [x] 1.3 Run `pnpm gen:feature auth` and remove or rename the generated example files that the design does not use
 
 ## 2. Red (developer writes the failing tests)
@@ -12,7 +12,7 @@
 - [x] 2.4 Write unit tests for routing: no session → sign-in screen; return to the requested page after sign-in; initial page per role; access denied message for a page outside the role
 - [x] 2.4.1 Route guards inside the feature: no session → sign-in screen keeping the requested page, nothing shown while the session is unknown, access denied for a page outside the role
 - [x] 2.5 Write unit tests for the app shell: each role sees exactly its menu and "Sair"; "Sair" calls the back end, clears the cache, and shows the sign-in screen; going back after sign-out shows the sign-in screen
-- [x] 2.7 Run `pnpm test` and confirm every new test fails for the expected reason
+- [x] 2.6 Run `pnpm test` and confirm every new test fails for the expected reason
 
 ## 3. Green (minimal production code)
 
@@ -26,6 +26,8 @@
 - [x] 3.5.1 Add `src/features/auth/components/auth-root.tsx` (creates the credentialed client once, when the routes mount; a client created at module load would keep the original `fetch`) and `src/features/auth/queries/sign-out-mutation.ts` (`useSignOut`: calls the back end, then clears the query cache)
 - [x] 3.6 Run `pnpm test` until every test passes
 
+- [x] 3.7 Fresh start on sign-in (found in review): test that a successful sign-in discards responses kept from before it, then clear the query cache in `queries/sign-in-mutation.ts`
+
 ## 4. Refactor
 
 - [x] 4.1 Improve names, remove duplication, and keep each component render-only, with every test still green
@@ -33,12 +35,12 @@
 
 ## 5. End to end
 
-- [x] 5.2 Add Playwright + axe tests with `page.route`: sign-in per role shows the right menu, wrong password message, access denied, sign-out and browser back
-- [x] 5.3 Run `pnpm test:e2e`
+- [x] 5.1 Add Playwright + axe tests with `page.route`: sign-in per role shows the right menu, wrong password message, access denied, sign-out and browser back
+- [x] 5.2 Run `pnpm test:e2e`
 
 ## 6. Consolidation
 
-- [x] 6.1 Manual check against the real back end (`feat/authAndUsers`): the four seeded users sign in and see the correct menu; capture screenshots of the error and loading states for the pull request
+- [x] 6.1 Manual check against the real back end (`feat/authAndUsers`): the four seeded users sign in and see the correct menu; capture screenshots of the error and loading states (saved outside the repository, to attach when the pull request is opened)
 - [x] 6.2 Run `pnpm format:check`, `pnpm verify` (includes typecheck, lint, tests, and `openspec validate --strict`), `pnpm test:coverage`, and `pnpm build`
 - [x] 6.3 Write `docs/changes/add-sign-in-and-role-menu.md` from `docs/templates/change.md` and evaluate the ADR candidate from `design.md`
 - [ ] 6.4 Open the pull request to `develop` listing the provisional decisions and open questions

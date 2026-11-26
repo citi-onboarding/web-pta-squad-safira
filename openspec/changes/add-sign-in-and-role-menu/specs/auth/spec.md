@@ -36,6 +36,15 @@ When the back end rejects the credentials, the sign-in screen SHALL show "E-mail
 - **WHEN** the back end answers the sign-in request with 401
 - **THEN** the form shows "E-mail ou senha incorretos", the visitor stays on the sign-in screen, and the button leaves the in-progress state
 
+### Requirement: Fresh start on sign-in
+
+When a sign-in succeeds, the portal SHALL discard every server response kept from before it, so a user never sees data kept from a previous session that ended without "Sair" (for example, an expired session or another person signing in on the same browser).
+
+#### Scenario: Signing in after a previous session
+
+- **WHEN** a sign-in succeeds while the portal still keeps server responses from before it
+- **THEN** those responses are discarded and only the newly signed-in user is kept as the current session
+
 ### Requirement: Session awareness
 
 The portal SHALL determine the current user from the back end and SHALL treat a 401 answer as "no session", not as an application error.

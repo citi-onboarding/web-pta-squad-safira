@@ -31,7 +31,7 @@ Constraints from `AGENTS.md`: features never import other features; `src/app` co
 
 ### D1. Session cookie through an auth-owned API client
 
-The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserApiClient({ credentials: "include" })`. `src/app/router.tsx` creates it once and passes it down through a small React context owned by the feature (`AuthApiClientProvider` / `useAuthApiClient`), placed in a pathless root route around the sign-in and protected routes. `src/app/providers.tsx` is not changed. Tests render the same provider with a client built by `createApiClient` against the MSW base URL.
+The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserApiClient({ credentials: "include" })`. `AuthRoot` (a feature component that `src/app/router.tsx` places in a pathless root route around the sign-in and protected routes) creates it once, when the routes mount, and passes it down through a small React context owned by the feature (`AuthApiClientProvider` / `useAuthApiClient`). Creating it at module load would keep the original `fetch`, which MSW replaces only after the test server starts. `src/app/providers.tsx` is not changed. Tests render the same provider with a client built by `createApiClient` against the MSW base URL.
 
 - _Why_: the front end (`:5173`) and the API (`:3001`) are different origins, so the browser only sends the cookie with `include`. The user chose not to change `src/shared`.
 - _Rejected_: changing the default in `src/shared/lib/api/create-client.ts` (affects every feature; decision deferred to the squad manager); a module-level singleton imported by components (breaks the injection rule).
@@ -100,7 +100,7 @@ Browsers also keep whole earlier page loads in memory (the back/forward cache) a
 ### D8. Tests
 
 - Unit (Vitest + Testing Library + MSW): MSW handlers answer `http://localhost:3001/auth/*`; the system under test (form, routes, shell) is rendered for real with `createMemoryRouter(routes)` and a fresh query client per test.
-- End to end (Playwright + axe): `page.route("**/auth/**")` answers the API inside the browser, including the CORS headers `Access-Control-Allow-Origin: http://127.0.0.1:4173` and `Access-Control-Allow-Credentials: true`, because the preview server and the API base URL are different origins.
+- End to end (Playwright + axe): `page.route("**/auth/**")` answers the API inside the browser, including the CORS headers `Access-Control-Allow-Origin` (echoing the request origin, `http://127.0.0.1:4173`) and `Access-Control-Allow-Credentials: true`, because the preview server and the API base URL are different origins.
 
 ## Risks / Trade-offs
 
@@ -115,7 +115,4 @@ Not applicable: front-end only, no data or contract change. Rollback is revertin
 
 ## Open Questions
 
-- What a signed-in user sees when opening `/entrar` (proposal, open question 3). Until answered, the sign-in screen is shown normally.
-- What the sign-in screen shows when the back end is unreachable or answers with an error other than 401 (proposal, open question 4). Until answered, the button leaves the in-progress state and no message is shown.
-- Whether the access-control table and credentialed client should become shared infrastructure (ADR candidate, evaluated during Consolidation).
-- What `/` should show (proposal, open question 5). Until answered, it keeps the boilerplate page.
+The open questions and their provisional behavior are listed once, numbered, in `proposal.md` (questions 1 to 8). Question 5 (credentialed client as shared infrastructure) is the ADR candidate.
