@@ -33,8 +33,8 @@
 
 ## 5. End to end
 
-- [ ] 5.2 Add Playwright + axe tests with `page.route`: sign-in per role shows the right menu, wrong password message, access denied, sign-out and browser back
-- [ ] 5.3 Run `pnpm test:e2e`
+- [x] 5.2 Add Playwright + axe tests with `page.route`: sign-in per role shows the right menu, wrong password message, access denied, sign-out and browser back
+- [x] 5.3 Run `pnpm test:e2e`
 
 ## 6. Consolidation
 
