@@ -12,7 +12,7 @@ The portal has no entry point: nobody can sign in, and no page knows who the use
 - Show "Você não tem acesso a esta página" instead of the page when the role may not open a route.
 - Add a "Sair" action that ends the session in the back end and discards every cached server response, so the browser back button shows no data.
 - Send the session cookie on API calls: the front end (`localhost:5173`) and the API (`localhost:3001`) are on different origins, so browser API calls must include credentials.
-- Replace the boilerplate home page and update its end-to-end test.
+- Leave the existing boilerplate files untouched except `src/app/router.tsx`, which FRONT-01 explicitly asks to change.
 
 ### In scope
 
@@ -38,13 +38,14 @@ The portal has no entry point: nobody can sign in, and no page knows who the use
 2. Whether temporary placeholder pages may stand in for destination screens that do not exist yet. Provisionally, each destination is a page showing only its title, to be replaced by the task that owns it.
 3. What a signed-in user sees when opening the sign-in screen. Not specified until answered.
 4. What the sign-in screen shows when the back end is unreachable or answers with an error other than 401. Not specified until answered.
+5. What `/` should show. It still shows the boilerplate example page, public, because FRONT-01 does not mention it and only explicit or indispensable changes are made to existing files.
 
 ### Decisions already taken
 
 - Texts follow the prototype ("Entrar no portal", "Painel do comercial", "Fila do financeiro"), restricted to the menu entries listed in FRONT-01.
 - Empty fields are blocked by the browser's required-field validation; no new message is introduced.
 - The session cookie is enabled inside the `auth` feature; shared code in `src/shared` is not changed.
-- Page addresses follow the prototype: `/entrar`, `/clientes`, `/pedidos`, `/painel`, `/fila`, `/usuarios`; `/` leads to the role's initial page.
+- Page addresses follow the prototype: `/entrar`, `/clientes`, `/pedidos`, `/painel`, `/fila`, `/usuarios`. The existing `/` page is not changed because FRONT-01 does not mention it.
 
 ## Capabilities
 
@@ -61,5 +62,5 @@ None.
 - **Business**: unblocks FRONT-03 and every authenticated screen; the four seeded users (one per role) must sign in and see the correct menu.
 - **Security**: the session lives only in the HttpOnly cookie set by the back end; the front end never stores tokens. The credential error never reveals whether the email or the password was wrong. Signing out clears the query cache so no previous user's data remains in memory.
 - **API contract**: consumes `POST /auth/login` (`{ email, senha }` → `{ id, nome, papel }`, 401 on bad credentials), `GET /auth/me` (`{ id, nome, papel }`, 401 without session), and `POST /auth/logout` (204), as published in the BACK-01 `openapi.json`. No contract change.
-- **Code**: new `src/features/auth/`; new `src/app/layout/app-shell.tsx` and `src/app/routes/login-page.tsx`; changes to `src/app/router.tsx`; the `auth` feature creates its API client with `credentials: "include"` (no change to `src/shared`); `e2e/` gains sign-in tests and the home-page test changes.
+- **Code**: new `src/features/auth/`; new `src/app/layout/app-shell.tsx` and `src/app/routes/login-page.tsx`; changes only to `src/app/router.tsx` among existing files; the `auth` feature creates its API client with `credentials: "include"` (no change to `src/shared`); `e2e/` gains a new sign-in test file; existing tests are not changed.
 - **Dependencies**: none new.

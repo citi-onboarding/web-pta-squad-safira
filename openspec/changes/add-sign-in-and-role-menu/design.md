@@ -6,7 +6,8 @@ Current state of the repository (boilerplate only, no feature yet):
 
 - `src/shared/lib/api/create-client.ts` builds an `ApiClient` from a base URL (`VITE_API_URL`, default `http://localhost:3001`). Request paths must be relative. It sends `credentials: "same-origin"` unless the caller passes another value.
 - `src/shared/lib/query/create-query-client.ts` creates the TanStack Query client (`retry: 1`, `staleTime: 60_000`).
-- `src/app/router.tsx` has a boilerplate home page at `/`; `e2e/application.spec.ts` asserts its heading.
+- `src/app/router.tsx` has a boilerplate home page at `/`; `src/app/router.test.tsx` and `e2e/application.spec.ts` assert its heading.
+- Existing files are changed only when FRONT-01 asks for it explicitly or the feature cannot work without it. Only `src/app/router.tsx` meets that bar.
 - Unit tests run with MSW and `onUnhandledRequest: "error"`; Playwright runs against `vite preview` with no back end.
 - The back end (BACK-01) keeps the session in the HttpOnly cookie `distrilux_session` (SameSite=Lax) and allows CORS with credentials from `http://localhost:5173`.
 
@@ -30,7 +31,7 @@ Constraints from `AGENTS.md`: features never import other features; `src/app` co
 
 ### D1. Session cookie through an auth-owned API client
 
-The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserApiClient({ credentials: "include" })`. `src/app/providers.tsx` creates it once and passes it down through a small React context owned by the feature (`AuthApiClientProvider` / `useAuthApiClient`). Tests render the same provider with a client built by `createApiClient` against the MSW base URL.
+The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserApiClient({ credentials: "include" })`. `src/app/router.tsx` creates it once and passes it down through a small React context owned by the feature (`AuthApiClientProvider` / `useAuthApiClient`), placed in a pathless root route around the sign-in and protected routes. `src/app/providers.tsx` is not changed. Tests render the same provider with a client built by `createApiClient` against the MSW base URL.
 
 - _Why_: the front end (`:5173`) and the API (`:3001`) are different origins, so the browser only sends the cookie with `include`. The user chose not to change `src/shared`.
 - _Rejected_: changing the default in `src/shared/lib/api/create-client.ts` (affects every feature; decision deferred to the squad manager); a module-level singleton imported by components (breaks the injection rule).
@@ -64,23 +65,25 @@ The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserAp
 
 - _Why_: menu, redirection, and access denial cannot drift apart because they read the same rows.
 - _Rejected_: a separate `allowedRoles` list on each route (two places to update per page).
+- _Limit_: an address is allowed only when it matches a menu entry exactly, so a future detail page such as `/clientes/123` needs this rule widened by the task that adds it.
 
 ### D5. Route composition in `src/app/router.tsx`
 
 ```
-/entrar                 LoginPage (public)
-/                       ProtectedRoute  -> no session: <Navigate to="/entrar" state={{ from }} replace />
-  index                   -> <Navigate to={initial page of role} replace />
-  AppShell (menu + Sair + <Outlet />)
-    /clientes, /pedidos, /painel, /fila, /usuarios
-                          RoleRoute -> role not allowed: "Você não tem acesso a esta página"
-*                       NotFoundPage
+/                       HomePage (boilerplate, unchanged)
+(pathless)              AuthApiClientProvider
+  /entrar                 LoginPage (public)
+  (pathless)              ProtectedRoute -> no session: <Navigate to="/entrar" state={{ from }} replace />
+    (pathless)              AppShell (menu + Sair + <Outlet />)
+      (pathless)              RoleRoute -> role not allowed: "Você não tem acesso a esta página"
+        /clientes, /pedidos, /painel, /fila, /usuarios
+*                       NotFoundPage (unchanged)
 ```
 
 - `ProtectedRoute` renders nothing while the session query is pending, so no protected content flashes before the answer.
 - After sign-in, the login page navigates to `state.from` when present and not `/entrar`; otherwise to the role's initial page. If `state.from` is outside the role, the access-denied message appears there, as the spec requires.
 - `ProtectedRoute`, `RoleRoute`, and the access-denied message live in `src/features/auth/components/`; `AppShell` and the pages live in `src/app/`.
-- The boilerplate `home-page.tsx` is removed; `router.test.tsx` and `e2e/application.spec.ts` are updated.
+- The `/` and `*` routes keep their current pages, so `router.test.tsx` and `e2e/application.spec.ts` stay as they are.
 
 ### D6. Placeholder destination pages
 
@@ -111,3 +114,4 @@ Not applicable: front-end only, no data or contract change. Rollback is revertin
 - What a signed-in user sees when opening `/entrar` (proposal, open question 3). Until answered, the sign-in screen is shown normally.
 - What the sign-in screen shows when the back end is unreachable or answers with an error other than 401 (proposal, open question 4). Until answered, the button leaves the in-progress state and no message is shown.
 - Whether the access-control table and credentialed client should become shared infrastructure (ADR candidate, evaluated during Consolidation).
+- What `/` should show (proposal, open question 5). Until answered, it keeps the boilerplate page.
