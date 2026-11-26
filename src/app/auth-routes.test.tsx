@@ -196,4 +196,27 @@ describe("sign out", () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
   });
+
+  it("hides a page the browser restores from memory after the session ended", async () => {
+    signInAs("patricia@distrilux.test");
+    renderApp(["/clientes"]);
+    await screen.findByRole("heading", { level: 1, name: "Clientes" });
+
+    // The session ended elsewhere (for example "Sair" in a later page load),
+    // and the browser now shows this kept page again without reloading it.
+    currentSession = null;
+    act(() => {
+      window.dispatchEvent(
+        new PageTransitionEvent("pageshow", { persisted: true }),
+      );
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: "Entrar no portal" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { level: 1, name: "Clientes" }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+  });
 });

@@ -93,6 +93,10 @@ The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserAp
 
 `queryClient.clear()` removes every cached response, and `navigate("/entrar", { replace: true })` replaces the current history entry. Going back lands on an earlier protected page, `ProtectedRoute` asks `GET /auth/me` again, gets 401, and redirects to `/entrar`. Nothing renders while that request is pending (D5).
 
+Browsers also keep whole earlier page loads in memory (the back/forward cache) and show them again on back without running the application from the start; the manual check found Chrome showing a signed-in page this way after "Sair". `AuthRoot` therefore listens to the `pageshow` event: when `event.persisted` is true, it resets the session query, so `ProtectedRoute` renders nothing at once and asks `GET /auth/me` again; a 401 then sends the user to `/entrar`.
+
+- _Rejected_: `Cache-Control: no-store` on `index.html` (changes the server configuration owned by others, and browsers may still restore the page); reloading the whole page on `pageshow` (slower, and the frozen page stays visible until the reload finishes).
+
 ### D8. Tests
 
 - Unit (Vitest + Testing Library + MSW): MSW handlers answer `http://localhost:3001/auth/*`; the system under test (form, routes, shell) is rendered for real with `createMemoryRouter(routes)` and a fresh query client per test.

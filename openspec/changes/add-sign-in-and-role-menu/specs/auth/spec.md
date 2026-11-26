@@ -119,3 +119,8 @@ When a signed-in user opens a page their role may not use, the portal SHALL show
 
 - **WHEN** the user presses the browser back button after signing out
 - **THEN** the portal shows the sign-in screen and no data from the ended session
+
+#### Scenario: Browser restores a page kept from before signing out
+
+- **WHEN** the browser shows again a page it kept in memory from before signing out, without loading it again
+- **THEN** the portal hides that page, asks the back end for the current session, and shows the sign-in screen when there is none
