@@ -2,12 +2,12 @@
 
 - [x] 1.1 Write `proposal.md`, `specs/auth/spec.md`, and `design.md`, and run `pnpm exec openspec validate add-sign-in-and-role-menu --strict`
 - [ ] 1.2 Send the open questions (administrator home, placeholder pages, signed-in user on `/entrar`, non-401 sign-in failures, shared credentialed client) to the squad manager and update the change with each answer before the related code is written
-- [ ] 1.3 Run `pnpm gen:feature auth` and remove or rename the generated example files that the design does not use
+- [x] 1.3 Run `pnpm gen:feature auth` and remove or rename the generated example files that the design does not use
 
 ## 2. Red (developer writes the failing tests)
 
-- [ ] 2.1 Write unit tests for the contract and API calls: `login`, `getSession` (user and 401 → `null`), and `logout` send the right relative paths and validate responses with the Zod schemas
-- [ ] 2.2 Write unit tests for the sign-in form: fields, texts, required fields block the request, in-progress button, and "E-mail ou senha incorretos" on 401
+- [x] 2.1 Write unit tests for the contract and API calls: `login`, `getSession` (user and 401 → `null`), and `logout` send the right relative paths and validate responses with the Zod schemas
+- [x] 2.2 Write unit tests for the sign-in form: fields, texts, required fields block the request, in-progress button, and "E-mail ou senha incorretos" on 401
 - [ ] 2.3 Write unit tests for the role table: menu entries and initial page of each of the four roles
 - [ ] 2.4 Write unit tests for routing: no session → sign-in screen; return to the requested page after sign-in; initial page per role; `/` → initial page; access denied message for a page outside the role
 - [ ] 2.5 Write unit tests for the app shell: each role sees exactly its menu and "Sair"; "Sair" calls the back end, clears the cache, and shows the sign-in screen; going back after sign-out shows the sign-in screen
@@ -16,10 +16,11 @@
 
 ## 3. Green (minimal production code)
 
-- [ ] 3.1 Add `types/session.ts`, `api/login.ts`, `api/get-session.ts`, `api/logout.ts`, and the auth API client with `credentials: "include"`
-- [ ] 3.2 Add `queries/session-query.ts` with `useSessao`
+- [x] 3.1 Add `types/session.ts`, `api/login.ts`, `api/get-session.ts`, `api/logout.ts`, and the auth API client with `credentials: "include"`
+- [x] 3.2 Add `queries/session-query.ts` with `useSessao`
+- [x] 3.2.1 Add `queries/sign-in-mutation.ts` (`useSignIn`) and split the API client context into `components/auth-api-client-context.ts` and `components/auth-api-client-provider.tsx` (not in the original plan: the form only renders, and the lint rule `react-refresh/only-export-components` requires the split)
 - [ ] 3.3 Add `types/role-access.ts`
-- [ ] 3.4 Add `components/login-form.tsx`, `components/protected-route.tsx`, the role check, and the access-denied message
+- [ ] 3.4 Add `components/login-form.tsx` (done), `components/protected-route.tsx`, the role check, and the access-denied message
 - [ ] 3.5 Add `src/app/routes/login-page.tsx`, the five placeholder pages, `src/app/layout/app-shell.tsx`, and update `src/app/router.tsx` and `src/app/providers.tsx`; remove `src/app/routes/home-page.tsx`
 - [ ] 3.6 Run `pnpm test` until every test passes
 
