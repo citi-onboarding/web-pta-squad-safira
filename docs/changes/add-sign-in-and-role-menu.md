@@ -1,0 +1,84 @@
+---
+change_id: add-sign-in-and-role-menu
+date: 2026-11-25
+status: in-progress
+owners: [Luana Allatta Guerra]
+tags: [auth, routing, front-01]
+related_adrs: []
+openspec_change: openspec/changes/add-sign-in-and-role-menu/
+---
+
+# Sign-in screen, role menu, and protected routes (FRONT-01)
+
+## Objective
+
+Give the portal its entry point: staff sign in with email and password, each role sees only its own menu and initial page, and pages outside a session or a role are not shown. It consumes the BACK-01 authentication API and unblocks FRONT-03 and every authenticated screen.
+
+## Change made
+
+- New `src/features/auth/` feature:
+  - `types/session.ts`: Zod schemas for the role, the session (`{ id, nome, papel }`), and the credentials (`{ email, senha }`), copied from the BACK-01 `openapi.json`.
+  - `api/login.ts`, `api/get-session.ts` (a 401 becomes `null`), `api/logout.ts`, and `api/auth-api-client.ts` (`credentials: "include"`, so the session cookie travels between `localhost:5173` and `localhost:3001`).
+  - `queries/session-query.ts` (`useSessao`, key `["auth", "session"]`, no retry), `queries/sign-in-mutation.ts`, and `queries/sign-out-mutation.ts` (logs out, then clears the whole query cache).
+  - `types/role-access.ts`: one table with each role's menu entries; the first entry is the initial page, and the entries are the only addresses the role may open.
+  - `components/`: `login-form.tsx`, `protected-route.tsx`, `role-route.tsx`, `access-denied.tsx`, `auth-root.tsx`, and the API client context and provider.
+- New in `src/app/`: `routes/login-page.tsx`, `layout/app-shell.tsx`, and five placeholder pages (`clients-page.tsx`, `my-orders-page.tsx`, `sales-dashboard-page.tsx`, `finance-queue-page.tsx`, `users-page.tsx`) that show only their title.
+- `src/app/router.tsx` is the only existing file changed: 38 lines added for `/entrar` and the protected routes; `/`, `*`, and the error page are unchanged.
+- `auth-root.tsx` listens to `pageshow`: when the browser restores a page from its back/forward cache, the kept session is reset, so the page hides and the back end is asked again. The manual check against the real back end found this case; automated browsers disable that cache by default.
+
+## Resulting behavior
+
+- `/entrar` shows the logo, "Entrar no portal", "Use o e-mail e a senha da DistriLux.", the required "E-mail" and "Senha" fields, and the "Entrar" button.
+- While signing in, the button is disabled and marked busy; a 401 shows "E-mail ou senha incorretos" without saying which field was wrong.
+- After signing in, the user goes to the page requested before signing in or, if none, to the role's initial page: VENDEDOR → Clientes, GERENTE → Painel do comercial, FINANCEIRO → Fila do financeiro, ADMINISTRADOR → Usuários (provisional).
+- The menu lists only the role's entries and "Sair".
+- Without a session, every protected page sends the visitor to `/entrar`; a page outside the role shows "Você não tem acesso a esta página".
+- "Sair" ends the session in the back end, clears every cached response, and shows `/entrar`; going back in the browser, including to a page restored from the browser cache, shows the sign-in screen and no data.
+
+## Impact
+
+- Consumes `POST /auth/login`, `GET /auth/me`, and `POST /auth/logout` from BACK-01 without changing the contract. The BACK-01 back end must allow CORS with credentials from the front-end origin (it does for `http://localhost:5173`).
+- Features that call authenticated routes later also need a client with `credentials: "include"`; today only `auth` creates one (open question 5 below).
+- Placeholder pages and the administrator's initial page are provisional; the tasks that own each screen replace them.
+- `/` still shows the boilerplate example page, without protection (open question 7 below).
+- Other teams' and boilerplate files (`providers.tsx`, `home-page.tsx`, `router.test.tsx`, `e2e/application.spec.ts`, `nginx.conf`, `playwright.config.ts`) are unchanged.
+
+## Validations executed
+
+Run on 2026-11-25 on branch `feat/loginAndRoleMenu`:
+
+- `pnpm format:check`: all files use Prettier code style.
+- `pnpm verify` (typecheck, lint, tests, `openspec validate --all --strict`, skills check): passed; 24 test files, 105 tests; OpenSpec 1 passed, 0 failed.
+- `pnpm test:coverage`: 105 tests passed; all files 98.24% statements, 92.59% branches, 98.68% functions, 98.22% lines. Uncovered lines in this change are defensive guards: the missing-provider error in `auth-api-client-context.ts`, the second-submit guard in `login-form.tsx`, the no-session guard in `role-route.tsx`, and the non-restored `pageshow` branch in `auth-root.tsx`.
+- `pnpm build`: passed.
+- `pnpm test:e2e`: 10 passed (7 new sign-in tests with axe, 3 existing).
+- Manual check against the real BACK-01 back end (branch `feat/authAndUsers`) with the four seeded users: each reached the right initial page and menu; access denied, wrong password, sign-out with one and two browser back presses, and reload all behaved as specified. Screenshots of the error and loading states are attached to the pull request.
+
+## Related artifacts
+
+- Proposal: `openspec/changes/add-sign-in-and-role-menu/proposal.md`
+- Specification: `openspec/changes/add-sign-in-and-role-menu/specs/auth/spec.md`
+- Design: `openspec/changes/add-sign-in-and-role-menu/design.md`
+- Tasks: `openspec/changes/add-sign-in-and-role-menu/tasks.md`
+- ADR: Not applicable. The decisions are local to the `auth` feature and reversible (the credentialed client and the role table live in the feature; the router only gained routes). Whether the credentialed client becomes shared infrastructure for every feature is still an open question for the squad manager; that decision would warrant an ADR.
+
+## Usage
+
+1. Run the BACK-01 back end (`feat/authAndUsers`) on port 3001 with the seed applied.
+2. Run `pnpm dev` in this repository and open `http://localhost:5173/entrar` (use `localhost`, which is the origin the back end allows).
+3. Sign in with a seeded user (`patricia`, `fernanda`, `sergio`, or `lucas`, all `@distrilux.test`, password from `SEED_PASSWORD` in the back end `.env`).
+
+## Implementation notes
+
+- Dependency: BACK-01 lives in the back-end repository (pull request #13, still open). This branch is based on `develop` and has no front-end branch to merge.
+- Create API clients inside components or tests, never at module load: the client keeps the `fetch` it sees when created, so a module-level client ignores MSW in tests.
+- An address is allowed only when it matches a menu entry exactly; a future detail page such as `/clientes/123` needs that rule widened by the task that adds it.
+- Visuals are minimal until the design system (FRONT-02).
+- Open questions for the squad manager, with the provisional behavior in parentheses:
+  1. Initial page of ADMINISTRADOR: "Usuários" or "Sincronização" (Usuários).
+  2. Placeholder destination pages (title only).
+  3. Signed-in user opening `/entrar` (the sign-in screen is shown).
+  4. Back end unreachable or non-401 sign-in error (the button returns to normal, no message).
+  5. Credentialed API client as the default for every feature (only in `auth`).
+  6. End-to-end tests with the API simulated by `page.route` (done this way).
+  7. What `/` should show (the boilerplate page, unchanged).

@@ -38,7 +38,7 @@
 
 ## 6. Consolidation
 
-- [ ] 6.1 Manual check against the real back end (`feat/authAndUsers`): the four seeded users sign in and see the correct menu; capture screenshots of the error and loading states for the pull request
-- [ ] 6.2 Run `pnpm format:check`, `pnpm verify` (includes typecheck, lint, tests, and `openspec validate --strict`), `pnpm test:coverage`, and `pnpm build`
-- [ ] 6.3 Write `docs/changes/add-sign-in-and-role-menu.md` from `docs/templates/change.md` and evaluate the ADR candidate from `design.md`
+- [x] 6.1 Manual check against the real back end (`feat/authAndUsers`): the four seeded users sign in and see the correct menu; capture screenshots of the error and loading states for the pull request
+- [x] 6.2 Run `pnpm format:check`, `pnpm verify` (includes typecheck, lint, tests, and `openspec validate --strict`), `pnpm test:coverage`, and `pnpm build`
+- [x] 6.3 Write `docs/changes/add-sign-in-and-role-menu.md` from `docs/templates/change.md` and evaluate the ADR candidate from `design.md`
 - [ ] 6.4 Open the pull request to `develop` listing the provisional decisions and open questions
