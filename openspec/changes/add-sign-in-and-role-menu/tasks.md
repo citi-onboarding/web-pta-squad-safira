@@ -8,8 +8,9 @@
 
 - [x] 2.1 Write unit tests for the contract and API calls: `login`, `getSession` (user and 401 → `null`), and `logout` send the right relative paths and validate responses with the Zod schemas
 - [x] 2.2 Write unit tests for the sign-in form: fields, texts, required fields block the request, in-progress button, and "E-mail ou senha incorretos" on 401
-- [ ] 2.3 Write unit tests for the role table: menu entries and initial page of each of the four roles
+- [x] 2.3 Write unit tests for the role table: menu entries and initial page of each of the four roles
 - [ ] 2.4 Write unit tests for routing: no session → sign-in screen; return to the requested page after sign-in; initial page per role; `/` → initial page; access denied message for a page outside the role
+- [x] 2.4.1 Route guards inside the feature: no session → sign-in screen keeping the requested page, nothing shown while the session is unknown, access denied for a page outside the role
 - [ ] 2.5 Write unit tests for the app shell: each role sees exactly its menu and "Sair"; "Sair" calls the back end, clears the cache, and shows the sign-in screen; going back after sign-out shows the sign-in screen
 - [ ] 2.6 Update `src/app/router.test.tsx` for the removed boilerplate home page
 - [ ] 2.7 Run `pnpm test` and confirm every new test fails for the expected reason
@@ -19,8 +20,9 @@
 - [x] 3.1 Add `types/session.ts`, `api/login.ts`, `api/get-session.ts`, `api/logout.ts`, and the auth API client with `credentials: "include"`
 - [x] 3.2 Add `queries/session-query.ts` with `useSessao`
 - [x] 3.2.1 Add `queries/sign-in-mutation.ts` (`useSignIn`) and split the API client context into `components/auth-api-client-context.ts` and `components/auth-api-client-provider.tsx` (not in the original plan: the form only renders, and the lint rule `react-refresh/only-export-components` requires the split)
-- [ ] 3.3 Add `types/role-access.ts`
-- [ ] 3.4 Add `components/login-form.tsx` (done), `components/protected-route.tsx`, the role check, and the access-denied message
+- [x] 3.3 Add `types/role-access.ts`
+- [x] 3.4 Add `components/login-form.tsx`, `components/protected-route.tsx`, the role check, and the access-denied message
+- [x] 3.4.1 Add `components/access-denied.tsx` and `components/role-route.tsx` (the role check)
 - [ ] 3.5 Add `src/app/routes/login-page.tsx`, the five placeholder pages, `src/app/layout/app-shell.tsx`, and update `src/app/router.tsx` and `src/app/providers.tsx`; remove `src/app/routes/home-page.tsx`
 - [ ] 3.6 Run `pnpm test` until every test passes
 
