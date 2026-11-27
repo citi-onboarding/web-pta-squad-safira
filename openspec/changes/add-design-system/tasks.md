@@ -4,7 +4,7 @@
 - [x] 1.2 Record the approved visual identity and the squad manager's answers (theme switch, demo mode, chips, captions)
 - [x] 1.3 Write ADR-001 and `DESIGN.md`
 - [x] 1.4 Add the logo and tile SVGs to `src/shared/assets/brand/`
-- [ ] 1.5 Get the answer to open question 1 (demo accounts) of `proposal.md`
+- [x] 1.5 Decide the demo shortcuts (only the email; decided without the squad manager because of the deadline)
 
 ## 2. Red (developer writes the failing tests)
 
@@ -28,6 +28,7 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 2.16 Theme switch reads "ON" in the light theme and "OFF" in the dark theme, with its name as a tooltip
 - [x] 2.17 Back link: "← Clientes" announced as "Voltar para Clientes" and opening the client list; "← Voltar" without a destination name
 - [x] 2.18 Run `pnpm test` and confirm the new tests fail for the expected reason
+- [x] 2.19 Demo shortcuts: "Gerente comercial" fills in only fernanda@distrilux.test, the password stays empty and focused, nothing is sent; not shown outside demo mode
 
 ## 3. Green (minimal production code)
 
@@ -44,7 +45,7 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 3.12 Turn off the browser validation balloon and add the sign-in field checks
 - [x] 3.13 Theme switch with ON/OFF
 - [x] 3.14 Add the back link component
-- [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE` (after open question 1)
+- [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE`
 
 ## 4. Refactor
 

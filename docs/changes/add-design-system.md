@@ -72,5 +72,5 @@ Give every portal screen one shared visual base (tokens, components, states and 
 
 - The ADR file name follows the task card (`ADR-001-design-system.md`); `docs/adr/README.md` suggests `0001-...`.
 - The shadcn registry was not reachable from the development environment, so the component source was taken from the shadcn/ui GitHub repository, the same code the CLI copies.
-- Pending: the demo shortcuts "Gerente comercial" and "Financeiro" (task 3.11) wait for the squad manager's answer on the demo accounts; the manager app tokens, font, icons and splash (tasks 6.x) go in a separate pull request in `mobile-pta-squad-safira`.
+- The demo shortcuts fill in only the email of the seed accounts; this was decided without consulting the squad manager because of the tight deadline and can be revisited. The manager app tokens, font, icons and splash (tasks 6.x) go in a separate pull request in `mobile-pta-squad-safira`.
 - At 16 px the favicon is below the logo's minimum size; it reads at 32 px and above.

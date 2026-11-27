@@ -309,6 +309,11 @@ The sign-in screen SHALL show the prototype shortcuts ("Gerente comercial", "Fin
 - **WHEN** the sign-in screen is opened in demo mode
 - **THEN** the shortcuts and the "Simular" controls are shown below a divider
 
+#### Scenario: Shortcut fills in only the email
+
+- **WHEN** in demo mode the visitor chooses the shortcut "Gerente comercial"
+- **THEN** the email field holds "fernanda@distrilux.test", the password stays empty for the visitor to type, and nothing is sent to the back end
+
 #### Scenario: Simulating the error state
 
 - **WHEN** in demo mode the visitor chooses "Erro" in "Simular"

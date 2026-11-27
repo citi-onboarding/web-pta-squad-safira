@@ -64,7 +64,7 @@ The redo adds the brand panel and changes markup and classes. The credential err
 
 ### D10. Demo mode
 
-A build-time flag `VITE_DEMO_MODE` (validated by the env schema, default `false`) turns on the prototype shortcuts and the "Simular" controls on the sign-in screen. With the flag off, those controls are not rendered. FRONT-01 left the prototype's "Ver como" out instead of putting it behind a flag, so this is the first demo-only control; later demo controls should reuse the same flag.
+A build-time flag `VITE_DEMO_MODE` (validated by the env schema, default `false`) turns on the prototype shortcuts and the "Simular" controls on the sign-in screen. With the flag off, those controls are not rendered. FRONT-01 left the prototype's "Ver como" out instead of putting it behind a flag, so this is the first demo-only control; later demo controls should reuse the same flag. The shortcuts fill in only the email of the seed accounts and move the focus to the password: every `VITE_*` value and everything in the bundle is public, so no password is written in the front end (see the proposal, "Decided without the squad manager").
 
 ### D11. Brand assets
 
@@ -91,5 +91,5 @@ The app keeps NativeWind and its single token file. This change only replaces th
 - Celeste and Bruma have low contrast on light backgrounds (about 3:1): only for glow, charts, illustration and large titles, never for body text.
 - Dark-theme values are only partly given by the brand guide: the derived ones must be checked with axe in both themes.
 - The task is large for one change. Order of work: tokens and components first, then the sign-in screen (the visual proposal), then the shell, then the template leftovers and the app.
-- Demo shortcuts may put demo credentials in the browser bundle (every `VITE_*` value is public). Acceptable only for fake demo accounts and only in the demo build (open question 1).
+- Demo shortcuts show the seed accounts' emails in the demo build only; they are fake accounts and carry no password.
 - Generated shadcn code becomes squad code: updates from shadcn are not automatic.

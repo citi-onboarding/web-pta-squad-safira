@@ -261,6 +261,38 @@ describe("LoginForm in demo mode", () => {
     ).toEqual(["Normal", "Erro", "Entrando"]);
   });
 
+  it("offers the shortcuts, which fill in only the email", async () => {
+    let requests = 0;
+    server.use(
+      http.post(`${API_URL}/auth/login`, () => {
+        requests += 1;
+        return HttpResponse.json(sessionsByRole.GERENTE);
+      }),
+    );
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} demoMode />);
+    const shortcuts = screen.getByRole("group", {
+      name: "Atalhos do protótipo",
+    });
+    expect(
+      within(shortcuts)
+        .getAllByRole("button")
+        .map((button) => button.textContent),
+    ).toEqual(["Gerente comercial", "Financeiro"]);
+
+    await userEvent
+      .setup()
+      .click(
+        within(shortcuts).getByRole("button", { name: "Gerente comercial" }),
+      );
+
+    expect(screen.getByLabelText("E-mail")).toHaveValue(
+      "fernanda@distrilux.test",
+    );
+    expect(screen.getByLabelText("Senha")).toHaveValue("");
+    expect(screen.getByLabelText("Senha")).toHaveFocus();
+    expect(requests).toBe(0);
+  });
+
   it("shows the credential error state without calling the back end", async () => {
     let requests = 0;
     server.use(

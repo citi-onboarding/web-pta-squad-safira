@@ -385,7 +385,7 @@ Files in `src/shared/assets/brand/`. Use them as they are; never redraw or retyp
 - Error: alert "E-mail ou senha incorretos." with icon and Pitanga outline, and both fields with a red border, never saying which one is wrong.
 - Field checks: the portal checks the fields itself, never with the browser's balloon. Messages under the field, with icon and Pitanga border: "Preencha o e-mail.", "Preencha a senha.", "Digite um e-mail válido, como nome@distrilux.com.br.".
 - Signing in: the button reads "Entrando…" and is disabled until the answer.
-- Prototype shortcuts ("Gerente comercial", "Financeiro") and "Simular Normal / Erro / Entrando": only in demo mode (`VITE_DEMO_MODE=true`), below a divider. The normal build does not show them.
+- Prototype shortcuts ("Gerente comercial", "Financeiro", which fill in only the email) and "Simular Normal / Erro / Entrando": only in demo mode (`VITE_DEMO_MODE=true`), below a divider. The normal build does not show them.
 
 ## Money
 

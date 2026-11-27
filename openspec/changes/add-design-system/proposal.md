@@ -57,6 +57,8 @@ Approved with the squad manager on 26/11. Sources: "DistriLux — Proposta visua
 
 ### Open questions
 
-This is the single numbered list; `design.md`, `DESIGN.md` and ADR-001 refer to these numbers.
+None. The last one (demo shortcuts) was decided as recorded below.
 
-1. Demo shortcuts: whether they fill email and password or only the email, and in which environment the demo build runs. Blocks only task 3.11.
+### Decided without the squad manager
+
+- Demo shortcuts ("Gerente comercial", "Financeiro") fill in only the email of the seed account (`fernanda@distrilux.test`, `sergio@distrilux.test`), and the person types the password, so no password is placed in the browser bundle. Decided without consulting the squad manager because of the tight deadline; it can be revisited.
