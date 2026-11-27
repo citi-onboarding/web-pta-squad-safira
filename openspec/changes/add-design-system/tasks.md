@@ -41,8 +41,8 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 
 ## 4. Refactor
 
-- [ ] 4.1 Remove duplicated classes and raw colors; keep every test green
-- [ ] 4.2 Polish the visual with the `unslop` and `impeccable` skills, with `DESIGN.md` and the brand guide as the source of truth; when a suggestion conflicts with the approved identity, the identity wins
+- [x] 4.1 Remove duplicated classes and raw colors; keep every test green
+- [x] 4.2 Polish the visual with the `unslop` and `impeccable` skills, with `DESIGN.md` and the brand guide as the source of truth; when a suggestion conflicts with the approved identity, the identity wins
 
 ## 5. Consolidation
 

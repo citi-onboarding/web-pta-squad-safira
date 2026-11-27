@@ -47,14 +47,14 @@ export function Modal({
             event.preventDefault();
             returnFocusTo.current?.focus();
           }}
-          className="fixed top-1/2 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col gap-5 rounded-tile border bg-surface p-6 text-foreground shadow-lg"
+          className="fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col gap-5 overflow-y-auto rounded-tile border bg-surface p-6 text-foreground shadow-lg"
         >
           <div className="flex items-start justify-between gap-4">
             <Dialog.Title className="text-title-2 font-bold">
               {title}
             </Dialog.Title>
             <Dialog.Close
-              className="-mt-1 -mr-2 rounded-tile p-2 text-muted hover:text-foreground"
+              className="-mt-2 -mr-3 shrink-0 rounded-tile p-3 text-muted transition-colors hover:bg-highlight/40 hover:text-foreground"
               aria-label="Fechar"
             >
               <X aria-hidden="true" className="size-4" />

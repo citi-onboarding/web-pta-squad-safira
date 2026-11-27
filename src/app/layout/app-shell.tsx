@@ -58,10 +58,12 @@ export function AppShell() {
           }}
         />
         {/* The ERP sync indicator goes here once there is sync data (BACK-04). */}
-        <div className="flex items-center gap-3">
-          <div className="flex flex-col items-end leading-tight">
-            <span className="text-body font-semibold">{session.data.nome}</span>
-            <span className="text-caption text-muted">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex min-w-0 flex-col items-end leading-tight">
+            <span className="max-w-full truncate text-body font-semibold">
+              {session.data.nome}
+            </span>
+            <span className="max-w-full truncate text-caption text-muted">
               {ROLE_LABELS[session.data.papel]}
             </span>
           </div>
@@ -92,8 +94,9 @@ export function AppShell() {
                   to={entry.path}
                   className={({ isActive }) =>
                     cn(
-                      "flex h-10 items-center rounded-tile px-3 font-medium text-muted hover:bg-highlight/40 hover:text-foreground",
-                      isActive && "bg-highlight text-highlight-fg",
+                      "flex h-10 items-center rounded-tile px-3 font-medium text-muted transition-colors hover:bg-highlight/40 hover:text-foreground",
+                      isActive &&
+                        "bg-highlight font-semibold text-highlight-fg hover:bg-highlight hover:text-highlight-fg",
                     )
                   }
                 >
@@ -102,15 +105,18 @@ export function AppShell() {
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            disabled={signOut.isPending}
-            className="flex h-11 shrink-0 cursor-pointer items-center gap-2 rounded-tile px-3 font-medium text-muted hover:text-foreground md:mt-auto md:h-10 md:border-t md:pt-2"
-          >
-            <LogOut aria-hidden="true" className="size-4" />
-            Sair
-          </button>
+          {/* The divider lives on the wrapper so the button text stays centered. */}
+          <div className="shrink-0 md:mt-auto md:border-t md:pt-3">
+            <button
+              type="button"
+              onClick={handleSignOut}
+              disabled={signOut.isPending}
+              className="flex h-11 w-full cursor-pointer items-center gap-2 rounded-tile px-3 font-medium text-muted transition-colors hover:bg-highlight/40 hover:text-foreground disabled:cursor-not-allowed disabled:text-disabled-fg disabled:hover:bg-transparent md:h-10"
+            >
+              <LogOut aria-hidden="true" className="size-4" />
+              Sair
+            </button>
+          </div>
         </nav>
         <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
           <Outlet />

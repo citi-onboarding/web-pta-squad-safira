@@ -51,9 +51,9 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-full max-w-sm flex-col gap-5"
+      className="flex w-full max-w-sm flex-col gap-4"
     >
-      <div className="flex flex-col gap-1.5">
+      <div className="mb-4 flex flex-col gap-1.5">
         <h1 className="text-title-1 font-bold">Entrar no portal</h1>
         <p className="text-muted">Use o e-mail e a senha da DistriLux.</p>
       </div>
@@ -81,7 +81,7 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
         invalid={showError}
       />
 
-      <Button type="submit" loading={pending}>
+      <Button type="submit" loading={pending} className="mt-2">
         {pending ? "Entrando…" : "Entrar"}
       </Button>
 

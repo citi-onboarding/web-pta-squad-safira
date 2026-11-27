@@ -11,9 +11,9 @@ export function FieldMessage({ id, children }: FieldMessageProps) {
     <p
       id={id}
       role="alert"
-      className="flex items-center gap-1.5 text-caption font-semibold text-danger"
+      className="flex items-start gap-1.5 text-caption font-semibold text-danger"
     >
-      <CircleAlert aria-hidden="true" className="size-3.5 shrink-0" />
+      <CircleAlert aria-hidden="true" className="mt-px size-3.5 shrink-0" />
       {children}
     </p>
   );

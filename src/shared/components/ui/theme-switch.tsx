@@ -29,7 +29,8 @@ export function ThemeSwitch({ className }: ThemeSwitchProps) {
       onClick={handleClick}
       aria-label={next === "dark" ? "Ativar tema escuro" : "Ativar tema claro"}
       className={cn(
-        "inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-tile border border-input bg-surface p-[3px] hover:border-foreground",
+        // The drawing stays 32 px tall; the invisible ::after grows the touch area to 40 px.
+        "relative inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-tile border border-input bg-surface p-[3px] transition-colors after:absolute after:-inset-1 hover:border-foreground",
         className,
       )}
     >

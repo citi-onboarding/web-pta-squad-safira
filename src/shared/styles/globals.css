@@ -39,6 +39,9 @@
   --brand-panel: var(--marinho);
   --brand-panel-fg: var(--porcelana);
   --overlay: rgb(14 42 92 / 0.55);
+
+  /* Native controls (select list, scrollbars, autofill) follow the theme. */
+  color-scheme: light;
 }
 
 .dark {
@@ -59,6 +62,8 @@
   --danger-surface: #3b1b3a;
   --focus: var(--bruma);
   --overlay: rgb(4 14 33 / 0.7);
+
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -124,6 +129,7 @@
   body {
     min-width: 320px;
     min-height: 100vh;
+    min-height: 100dvh; /* the phone's address bar does not cut the screen */
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);

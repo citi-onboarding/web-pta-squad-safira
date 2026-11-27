@@ -44,7 +44,7 @@ export function SelectField({
           id={id}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? messageId : undefined}
-          className="h-11 w-full cursor-pointer appearance-none rounded-tile border border-input bg-surface pr-10 pl-3 text-body text-foreground disabled:cursor-not-allowed disabled:bg-disabled disabled:text-disabled-fg aria-invalid:border-2 aria-invalid:border-danger"
+          className="h-11 w-full cursor-pointer appearance-none rounded-tile border border-input bg-surface pr-10 pl-3 text-body text-foreground transition-colors enabled:hover:border-muted disabled:cursor-not-allowed disabled:bg-disabled disabled:text-disabled-fg aria-invalid:border-danger aria-invalid:shadow-[inset_0_0_0_1px_var(--danger)]"
           {...props}
         >
           {options.map((option) => (

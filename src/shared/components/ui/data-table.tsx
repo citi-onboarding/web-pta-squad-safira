@@ -78,7 +78,7 @@ export function DataTable<Row>({
             key={getRowKey(row)}
             className="rounded-tile border bg-surface px-4 py-3"
           >
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
+            <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-1">
               {columns.map((column) => (
                 <div key={column.key} className="contents">
                   <dt className="text-caption font-semibold text-muted">

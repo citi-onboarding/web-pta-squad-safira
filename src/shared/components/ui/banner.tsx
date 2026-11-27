@@ -19,14 +19,14 @@ export function Banner({ tone, children, className }: BannerProps) {
       role={tone === "error" ? "alert" : "status"}
       data-tone={tone}
       className={cn(
-        "flex items-start gap-2.5 rounded-tile border px-3.5 py-3 text-body",
+        "flex items-start gap-2.5 rounded-tile border px-4 py-3 text-body",
         tone === "error"
           ? "border-danger bg-danger-surface text-danger"
           : "border-highlight bg-highlight/50 text-foreground",
         className,
       )}
     >
-      <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+      <Icon aria-hidden="true" className="mt-1 size-4 shrink-0" />
       <div className="font-medium">{children}</div>
     </div>
   );

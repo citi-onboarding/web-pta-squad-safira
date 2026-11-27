@@ -21,18 +21,28 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-3 px-4 py-10 text-center",
+        "flex flex-col items-center gap-2 px-4 py-10 text-center",
         className,
       )}
     >
-      <img src={tileLouca} alt="" className="size-20 dark:hidden" />
-      <img src={tileNoturna} alt="" className="hidden size-20 dark:block" />
+      <img
+        src={tileLouca}
+        alt=""
+        aria-hidden="true"
+        className="mb-2 size-20 dark:hidden"
+      />
+      <img
+        src={tileNoturna}
+        alt=""
+        aria-hidden="true"
+        className="mb-2 hidden size-20 dark:block"
+      />
       <p className="text-title-3 font-semibold text-foreground">{message}</p>
       {description ? (
         <p className="max-w-sm text-body text-muted">{description}</p>
       ) : null}
       {action ? (
-        <Button variant="secondary" onClick={action.onClick}>
+        <Button variant="secondary" onClick={action.onClick} className="mt-3">
           {action.label}
         </Button>
       ) : null}

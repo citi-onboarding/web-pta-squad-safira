@@ -24,10 +24,10 @@ export function LoginPage() {
   }
 
   return (
-    <div className="grid min-h-screen bg-background md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+    <div className="grid min-h-screen grid-rows-[auto_1fr] bg-background md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:grid-rows-none">
       {/* Brand panel: the same colors in both themes (DESIGN.md). */}
-      <aside className="flex bg-brand-panel text-brand-panel-fg">
-        <div className="flex flex-1 flex-col justify-between gap-8 px-6 py-8 md:px-10 md:py-12">
+      <aside className="flex border-b border-border bg-brand-panel text-brand-panel-fg md:border-b-0">
+        <div className="flex flex-1 flex-col justify-between gap-6 px-6 py-6 md:gap-8 md:px-10 md:py-12">
           <img
             src={logoLight}
             alt="DistriLux"
@@ -61,8 +61,8 @@ export function LoginPage() {
         </div>
       </aside>
 
-      <main className="relative flex items-center justify-center px-6 py-12 md:px-12">
-        <ThemeSwitch className="absolute top-4 right-4" />
+      <main className="relative flex items-start justify-center px-6 pt-20 pb-12 md:items-center md:px-12 md:py-12">
+        <ThemeSwitch className="absolute top-6 right-6 md:top-12 md:right-12" />
         <LoginForm onSignedIn={handleSignedIn} demoMode={env.VITE_DEMO_MODE} />
       </main>
     </div>
