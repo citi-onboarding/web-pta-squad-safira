@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { describe, expect, it, vi } from "vitest";
@@ -28,10 +28,10 @@ async function fillAndSubmit(email: string, password: string) {
 }
 
 describe("LoginForm", () => {
-  it("shows the logo, title, text, both fields, and the Entrar button", () => {
+  // The logo moved to the brand panel of the sign-in page (FRONT-02).
+  it("shows the title, text, both fields, and the Entrar button", () => {
     renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
 
-    expect(screen.getByText("DistriLux")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { level: 1, name: "Entrar no portal" }),
     ).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("LoginForm", () => {
 
     const user = await fillAndSubmit(EMAIL, PASSWORD);
 
-    const button = screen.getByRole("button", { name: "Entrar" });
+    const button = await screen.findByRole("button", { name: "Entrando…" });
     await waitFor(() => expect(button).toBeDisabled());
     expect(button).toHaveAttribute("aria-busy", "true");
 
@@ -113,7 +113,16 @@ describe("LoginForm", () => {
     await fillAndSubmit(EMAIL, "wrong");
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "E-mail ou senha incorretos",
+      "E-mail ou senha incorretos.",
+    );
+    expect(screen.getAllByRole("alert")).toHaveLength(1);
+    expect(screen.getByLabelText("E-mail")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(screen.getByLabelText("Senha")).toHaveAttribute(
+      "aria-invalid",
+      "true",
     );
     expect(screen.getByRole("button", { name: "Entrar" })).toBeEnabled();
     expect(onSignedIn).not.toHaveBeenCalled();
@@ -163,5 +172,65 @@ describe("LoginForm", () => {
     expect(queryClient.getQueryData(sessionQueryKey)).toEqual(
       sessionsByRole.VENDEDOR,
     );
+  });
+});
+
+describe("LoginForm in demo mode", () => {
+  it("shows no prototype controls outside demo mode", () => {
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
+
+    expect(
+      screen.queryByRole("group", { name: "Simular" }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Atalhos do protótipo")).not.toBeInTheDocument();
+  });
+
+  it("shows the Simular controls in demo mode", () => {
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} demoMode />);
+
+    const simulate = screen.getByRole("group", { name: "Simular" });
+    expect(
+      within(simulate)
+        .getAllByRole("button")
+        .map((button) => button.textContent),
+    ).toEqual(["Normal", "Erro", "Entrando"]);
+  });
+
+  it("shows the credential error state without calling the back end", async () => {
+    let requests = 0;
+    server.use(
+      http.post(`${API_URL}/auth/login`, () => {
+        requests += 1;
+        return HttpResponse.json(sessionsByRole.VENDEDOR);
+      }),
+    );
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} demoMode />);
+    const user = userEvent.setup();
+    const simulate = screen.getByRole("group", { name: "Simular" });
+
+    await user.click(within(simulate).getByRole("button", { name: "Erro" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "E-mail ou senha incorretos.",
+    );
+    expect(screen.getByLabelText("E-mail")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(requests).toBe(0);
+
+    await user.click(within(simulate).getByRole("button", { name: "Normal" }));
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("shows the signing-in state without calling the back end", async () => {
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} demoMode />);
+    const simulate = screen.getByRole("group", { name: "Simular" });
+
+    await userEvent
+      .setup()
+      .click(within(simulate).getByRole("button", { name: "Entrando" }));
+
+    expect(screen.getByRole("button", { name: "Entrando…" })).toBeDisabled();
   });
 });

@@ -10,6 +10,7 @@ describe("environment", () => {
       VITE_APP_NAME: "DistriLux Portal de Pedidos",
       VITE_APP_URL: "http://localhost:5173",
       VITE_API_URL: "http://localhost:3001",
+      VITE_DEMO_MODE: false,
     });
   });
 
@@ -19,12 +20,21 @@ describe("environment", () => {
         VITE_APP_NAME: "Operations Console",
         VITE_APP_URL: "https://app.example.com",
         VITE_API_URL: "https://api.example.com",
+        VITE_DEMO_MODE: "true",
       }),
     ).toEqual({
       VITE_APP_NAME: "Operations Console",
       VITE_APP_URL: "https://app.example.com",
       VITE_API_URL: "https://api.example.com",
+      VITE_DEMO_MODE: true,
     });
+  });
+
+  it("keeps demo mode off unless it is explicitly turned on", () => {
+    expect(parseEnvironment({ VITE_DEMO_MODE: "false" }).VITE_DEMO_MODE).toBe(
+      false,
+    );
+    expect(parseEnvironment({ VITE_DEMO_MODE: "" }).VITE_DEMO_MODE).toBe(false);
   });
 
   it("rejects invalid public values", () => {
