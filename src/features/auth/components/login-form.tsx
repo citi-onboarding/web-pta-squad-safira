@@ -1,26 +1,35 @@
-import { useId } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 
+import { Banner } from "@/shared/components/ui/banner";
+import { Button } from "@/shared/components/ui/button";
+import { TextField } from "@/shared/components/ui/text-field";
 import { ApiError } from "@/shared/lib/api/errors";
 
 import { useSignIn } from "../queries/sign-in-mutation";
 import type { Session } from "../types/session";
+import { DemoControls } from "./demo-controls";
+import type { SimulatedState } from "./demo-controls";
 
 type LoginFormProps = {
   onSignedIn: (session: Session) => void;
+  // Shows the prototype controls (demo builds only).
+  demoMode?: boolean;
 };
 
-export function LoginForm({ onSignedIn }: LoginFormProps) {
-  const emailId = useId();
-  const passwordId = useId();
+export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
   const signIn = useSignIn();
+  const [simulated, setSimulated] = useState<SimulatedState>("normal");
   const credentialsRejected =
     signIn.error instanceof ApiError && signIn.error.status === 401;
+  const showError =
+    simulated === "error" || (simulated === "normal" && credentialsRejected);
+  const pending = simulated === "pending" || signIn.isPending;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (signIn.isPending) {
+    if (pending || simulated !== "normal") {
       return;
     }
 
@@ -34,56 +43,51 @@ export function LoginForm({ onSignedIn }: LoginFormProps) {
     );
   }
 
+  function handleSimulate(state: SimulatedState) {
+    signIn.reset();
+    setSimulated(state);
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-sm flex-col gap-4 rounded border p-6"
+      className="flex w-full max-w-sm flex-col gap-5"
     >
-      <p className="text-center text-lg font-bold">DistriLux</p>
-      <h1 className="text-center text-xl font-semibold">Entrar no portal</h1>
-      <p className="text-center text-sm">
-        Use o e-mail e a senha da DistriLux.
-      </p>
-
-      <div className="flex flex-col gap-1">
-        <label htmlFor={emailId}>E-mail</label>
-        <input
-          id={emailId}
-          name="email"
-          type="email"
-          placeholder="nome@distrilux.com.br"
-          autoComplete="username"
-          required
-          className="rounded border px-3 py-2"
-        />
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-title-1 font-bold">Entrar no portal</h1>
+        <p className="text-muted">Use o e-mail e a senha da DistriLux.</p>
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor={passwordId}>Senha</label>
-        <input
-          id={passwordId}
-          name="senha"
-          type="password"
-          autoComplete="current-password"
-          required
-          className="rounded border px-3 py-2"
-        />
-      </div>
-
-      {credentialsRejected ? (
-        <p role="alert" className="text-sm text-red-700">
-          E-mail ou senha incorretos
-        </p>
+      {showError ? (
+        // Never says which of the two was wrong (US-001).
+        <Banner tone="error">E-mail ou senha incorretos.</Banner>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={signIn.isPending}
-        aria-busy={signIn.isPending}
-        className="rounded bg-black px-3 py-2 text-white disabled:opacity-60"
-      >
-        Entrar
-      </button>
+      <TextField
+        label="E-mail"
+        name="email"
+        type="email"
+        placeholder="nome@distrilux.com.br"
+        autoComplete="username"
+        required
+        invalid={showError}
+      />
+      <TextField
+        label="Senha"
+        name="senha"
+        type="password"
+        autoComplete="current-password"
+        required
+        invalid={showError}
+      />
+
+      <Button type="submit" loading={pending}>
+        {pending ? "Entrando…" : "Entrar"}
+      </Button>
+
+      {demoMode ? (
+        <DemoControls state={simulated} onChange={handleSimulate} />
+      ) : null}
     </form>
   );
 }
