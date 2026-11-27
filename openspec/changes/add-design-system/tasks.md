@@ -55,7 +55,7 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 ## 5. Consolidation
 
 - [x] 5.1 Playwright + axe for the sign-in screen and a signed-in screen: desktop and 390 px, light and dark; no horizontal scrolling at 390 px; the first visit with the system in dark mode opens in the dark theme; the theme choice survives a page reload
-- [ ] 5.1.1 Check by hand that the keyboard focus is visible on every component, in both themes
+- [x] 5.1.1 Check by hand that the keyboard focus is visible on every component, in both themes
 - [x] 5.2 Compare the sign-in screen with the approved design, light and dark
 - [x] 5.3 Fill the `context` block of `openspec/config.yaml` with the DistriLux domain
 - [x] 5.4 Remove the template text from `README.md` and `index.html`, and add the favicon (stacked negative logo on Marinho)
