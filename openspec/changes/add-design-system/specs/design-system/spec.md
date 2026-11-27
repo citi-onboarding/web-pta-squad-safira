@@ -161,7 +161,7 @@ Dialogs SHALL keep the keyboard focus inside them while open, SHALL close when t
 
 ### Requirement: Signed-in layout
 
-Every signed-in screen SHALL show a header with the DistriLux logo, the ERP sync indicator, the person's name and role and the theme switch, a menu with the entries of the person's role and the current entry highlighted, and the content area. On a 390 px phone the menu SHALL become a select below the header, without horizontal scrolling.
+Every signed-in screen SHALL show a header with the DistriLux logo, the person's name and role and the theme switch, a menu with the entries of the person's role and the current entry highlighted, and the content area. On a 390 px phone the menu SHALL become a select below the header, without horizontal scrolling.
 
 #### Scenario: Current page highlighted
 

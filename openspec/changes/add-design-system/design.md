@@ -14,7 +14,7 @@ Components are generated with the shadcn CLI and committed. `components.json` po
 - `ui` → `@/shared/components/ui`
 - `utils` → `@/shared/lib/cn` (the `cn()` helper that merges Tailwind classes)
 
-Only the components this change needs are added: button, input, label, select, table, card, badge (status chip), alert (banner), dialog (modal). Generated files are squad-owned and may be edited. Loading, empty, error-with-retry and the sync indicator are written by the squad on top of them. See ADR-001.
+Only the components this change needs are added: button, input, label, table, card, badge (status chip), alert (banner), dialog (modal). Generated files are squad-owned and may be edited. The select is a styled native `<select>` instead of the shadcn select: it is the control the phone menu needs, it gets the phone's own picker, and it is fully accessible without extra code. Loading, empty, error-with-retry, the data table with its phone cards, and the sync indicator are written by the squad on top of them. See ADR-001.
 
 ### D2. Tokens as CSS variables with two values
 
@@ -44,7 +44,7 @@ One chip component with two families of variants. The text is always rendered; f
 
 - Banner: information (Bruma) and error (Pitanga, `role="alert"`), always icon plus text.
 - Loading announces itself with `role="status"` and keeps the layout size. Empty shows the 2×2 tile figure, a message and an optional action. Error shows the message and a "Tentar de novo" button that calls the retry function it receives.
-- The sync indicator receives the last sync time and whether the ERP is available, and formats the date with the shared datetime helpers. It does not fetch anything: the data source comes with BACK-04 and the screens that use it.
+- The sync indicator receives the last sync time and whether the ERP is available, and formats the date as `DD/MM/YYYY HH:mm` in Recife time (`America/Recife`), so every person sees the same time as the company. It does not fetch anything.
 
 ### D7. Modal
 
@@ -52,7 +52,7 @@ Built on the shadcn dialog (Radix): focus trap, Esc closes, focus returns to the
 
 ### D8. Application shell
 
-`app-shell.tsx` keeps its behavior from FRONT-01 (role menu, sign-out) and gains the header (logo, sync indicator, name and role, theme switch), the highlighted current entry, and the phone layout where the menu becomes a select below the header. Its existing tests keep passing.
+`app-shell.tsx` keeps its behavior from FRONT-01 (role menu, sign-out) and gains the header (logo, name and role, theme switch), the highlighted current entry, and the phone layout where the menu becomes a select below the header, inside the same navigation landmark. Its existing tests keep passing. The header reserves the place of the sync indicator; it is wired when there is sync data to show (BACK-04 and the screens that read it), since no API exposes it yet.
 
 ### D9. Sign-in redo
 
