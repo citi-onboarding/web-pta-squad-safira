@@ -84,6 +84,19 @@ a missing loading/empty/error state, copy that leaves the prototype or the
 voice, red used for something that is not an error, a missing check at 390 px
 or in the dark theme. Leave the other repository rules to `citi-review-change`.
 
+## The manager app follows this file
+
+The manager app (`mobile-pta-squad-safira`) has its own `distrilux-ui` skill,
+which reads this `DESIGN.md` from the sibling folder and compares its colors
+with the app's `src/styles/tokens.json`. The app copies the values, not the
+file, so a change here does not reach the app by itself.
+
+When a change edits a brand value in `DESIGN.md` (a palette color, a light
+theme color, the typeface or the corner), tell the person that the manager app
+needs the same value in `src/styles/tokens.json`, in its own pull request in
+that repository, and list each value that changed. Do not edit the other
+repository from here.
+
 ## When DESIGN.md has no answer
 
 Stop and ask the person; do not invent a rule. When a new rule is agreed, the
