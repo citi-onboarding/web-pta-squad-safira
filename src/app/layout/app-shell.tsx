@@ -116,6 +116,11 @@ export function AppShell() {
               <LogOut aria-hidden="true" className="size-4" />
               Sair
             </button>
+            {signOut.isError ? (
+              <p role="alert" className="mt-1 px-3 text-caption text-danger">
+                Não foi possível sair. Tente novamente.
+              </p>
+            ) : null}
           </div>
         </nav>
         <main className="flex-1 px-4 py-6 md:px-8 md:py-8">

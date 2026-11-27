@@ -36,6 +36,15 @@ When the back end rejects the credentials, the sign-in screen SHALL show "E-mail
 - **WHEN** the back end answers the sign-in request with 401
 - **THEN** the form shows "E-mail ou senha incorretos", the visitor stays on the sign-in screen, and the button leaves the in-progress state
 
+### Requirement: Other sign-in failures
+
+When a sign-in fails for any reason other than rejected credentials (another error status such as 429 or 503, or no connection), the sign-in screen SHALL show "Não foi possível entrar. Tente novamente." inside the form.
+
+#### Scenario: Back end unavailable
+
+- **WHEN** the sign-in request fails with an error status other than 401 or does not reach the back end
+- **THEN** the form shows "Não foi possível entrar. Tente novamente.", the visitor stays on the sign-in screen, and the button leaves the in-progress state
+
 ### Requirement: Fresh start on sign-in
 
 When a sign-in succeeds, the portal SHALL discard every server response kept from before it, so a user never sees data kept from a previous session that ended without "Sair" (for example, an expired session or another person signing in on the same browser).
@@ -61,7 +70,22 @@ The portal SHALL determine the current user from the back end and SHALL treat a 
 
 ### Requirement: Protected pages
 
-Every page except the sign-in screen SHALL require a session. A visitor without a session SHALL be sent to the sign-in screen, and after signing in SHALL return to the page originally requested.
+Every page except the sign-in screen SHALL require a session. A visitor without a session SHALL be sent to the sign-in screen, and after signing in SHALL return to the page originally requested. While the session is being checked, the portal SHALL show "Carregando..." and nothing from the page. When the session check fails for a reason other than "no session", the portal SHALL show "Não foi possível entrar. Tente novamente." instead of the page and SHALL NOT send the visitor to the sign-in screen.
+
+#### Scenario: Session being checked
+
+- **WHEN** a protected page is opened and the back end has not answered the session check yet
+- **THEN** the portal shows "Carregando..." and nothing from the page
+
+#### Scenario: Session check fails
+
+- **WHEN** the session check fails with an error status other than 401 or does not reach the back end
+- **THEN** the portal shows "Não foi possível entrar. Tente novamente." and neither the page nor the sign-in screen
+
+#### Scenario: Opening the root address
+
+- **WHEN** someone opens `/`
+- **THEN** a signed-in user sees the initial page of their role, and a visitor without a session sees the sign-in screen
 
 #### Scenario: Opening a protected page without a session
 
@@ -117,7 +141,12 @@ When a signed-in user opens a page their role may not use, the portal SHALL show
 
 ### Requirement: Sign out
 
-"Sair" SHALL end the session in the back end, discard every server response kept by the portal, and show the sign-in screen. Navigating back in the browser afterwards SHALL NOT show data from the ended session.
+"Sair" SHALL end the session in the back end, discard every server response kept by the portal, and show the sign-in screen. Navigating back in the browser afterwards SHALL NOT show data from the ended session. When the back end cannot end the session, the user SHALL stay on the page and see "Não foi possível sair. Tente novamente.".
+
+#### Scenario: Signing out fails
+
+- **WHEN** a signed-in user presses "Sair" and the sign-out request fails
+- **THEN** the user stays on the page, sees "Não foi possível sair. Tente novamente.", and can press "Sair" again
 
 #### Scenario: Signing out
 

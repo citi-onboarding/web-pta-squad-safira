@@ -7,6 +7,7 @@ import { TextField } from "@/shared/components/ui/text-field";
 import { ApiError } from "@/shared/lib/api/errors";
 
 import { useSignIn } from "../queries/sign-in-mutation";
+import { SIGN_IN_FAILURE_MESSAGE } from "../types/auth-messages";
 import type { Session } from "../types/session";
 import { DemoControls } from "./demo-controls";
 import type { SimulatedState } from "./demo-controls";
@@ -49,6 +50,9 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
     signIn.error instanceof ApiError && signIn.error.status === 401;
   const showError =
     simulated === "error" || (simulated === "normal" && credentialsRejected);
+  // Another error status or no connection: a generic message, fields untouched.
+  const showFailure =
+    simulated === "normal" && Boolean(signIn.error) && !credentialsRejected;
   const pending = simulated === "pending" || signIn.isPending;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -113,6 +117,9 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
       {showError ? (
         // Never says which of the two was wrong (US-001).
         <Banner tone="error">E-mail ou senha incorretos.</Banner>
+      ) : null}
+      {showFailure ? (
+        <Banner tone="error">{SIGN_IN_FAILURE_MESSAGE}</Banner>
       ) : null}
 
       <TextField

@@ -61,6 +61,7 @@ describe("ProtectedRoute", () => {
     // Wait until the back end received the request, so the session is
     // really unknown and `answer` releases the pending response.
     await waitFor(() => expect(requested).toBe(true));
+    expect(screen.getByText("Carregando...")).toBeInTheDocument();
     expect(screen.queryByText("Clients content")).not.toBeInTheDocument();
     expect(screen.queryByText("Sign-in screen")).not.toBeInTheDocument();
 
@@ -68,5 +69,21 @@ describe("ProtectedRoute", () => {
     expect(
       await screen.findByRole("heading", { name: "Clients content" }),
     ).toBeInTheDocument();
+  });
+
+  it("shows the generic failure message when the session check fails", async () => {
+    server.use(
+      http.get(`${API_URL}/auth/me`, () =>
+        HttpResponse.json({ message: "Internal error." }, { status: 500 }),
+      ),
+    );
+
+    renderGuardedRoute("/clientes");
+
+    expect(
+      await screen.findByText("Não foi possível entrar. Tente novamente."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Clients content")).not.toBeInTheDocument();
+    expect(screen.queryByText("Sign-in screen")).not.toBeInTheDocument();
   });
 });

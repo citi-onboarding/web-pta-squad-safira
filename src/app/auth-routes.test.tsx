@@ -220,3 +220,50 @@ describe("sign out", () => {
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
   });
 });
+
+describe("sign-out failure", () => {
+  it("keeps the user on the page with a message when the back end cannot end the session", async () => {
+    signInAs("patricia@distrilux.test");
+    server.use(
+      http.post(`${env.VITE_API_URL}/auth/logout`, () => {
+        logoutCalls += 1;
+        return HttpResponse.json({}, { status: 503 });
+      }),
+    );
+    renderApp(["/clientes"]);
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Sair" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Não foi possível sair. Tente novamente.",
+    );
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Clientes" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sair" })).toBeEnabled();
+    expect(logoutCalls).toBe(1);
+  });
+});
+
+describe("root address", () => {
+  it("sends a signed-in user to the initial page of their role", async () => {
+    signInAs("sergio@distrilux.test");
+    renderApp(["/"]);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Fila do financeiro",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("sends a visitor without a session to the sign-in screen", async () => {
+    renderApp(["/"]);
+
+    expect(
+      await screen.findByRole("heading", { name: "Entrar no portal" }),
+    ).toBeInTheDocument();
+  });
+});
