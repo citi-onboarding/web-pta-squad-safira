@@ -158,8 +158,17 @@ test("a wrong password shows the credential error without naming the wrong field
 
   await signIn(page, "patricia@distrilux.test", "wrong-password");
 
+  // FRONT-02: the approved brand guide writes the message with a final period.
   await expect(page.getByRole("alert")).toHaveText(
-    "E-mail ou senha incorretos",
+    "E-mail ou senha incorretos.",
+  );
+  await expect(page.getByLabel("E-mail")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  await expect(page.getByLabel("Senha")).toHaveAttribute(
+    "aria-invalid",
+    "true",
   );
   await expect(page).toHaveURL("/entrar");
   await expectNoAccessibilityViolations(page);

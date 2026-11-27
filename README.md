@@ -1,6 +1,8 @@
 # DistriLux Portal de Pedidos
 
-A scalable foundation for React single-page applications that consume external APIs. The repository enforces architectural boundaries while providing routing, server-state management, testing, CI, and production-ready static delivery.
+Web portal of DistriLux's internal order system, built by Squad Safira in CITi's PTA Tech 26.2. Sellers find the clients of their portfolio, check the available credit and send orders to the ERP once; the sales manager, finance and the administrator each get the screens of their role. The portal talks only to its own API (`backend-pta-squad-safira`), never to the ERP.
+
+The visual standard is [DESIGN.md](DESIGN.md), and architecture decisions are in [docs/adr/](docs/adr/README.md). The project started from CITi's React + Vite boilerplate, which provides the architectural boundaries, routing, server-state management, testing, CI and static delivery listed below.
 
 ## Included
 
@@ -121,12 +123,12 @@ The production build is a static SPA. The included Nginx configuration:
 `/health.json` only confirms that frontend files are being served. Backend and external dependency health must be monitored by their own services.
 
 ```bash
-docker build -t vite-boilerplate .
-docker run --rm -p 3000:8080 vite-boilerplate
+docker build -t distrilux-portal-web .
+docker run --rm -p 3000:8080 distrilux-portal-web
 ```
 
 ## Repository setup
 
-Rename the GitHub repository to `vite-boilerplate` after converting or creating it. Then enable template-repository mode and configure branch rules, required CI checks, CodeQL, dependency review, and valid CODEOWNERS for the organization when owner names are known.
+Branch rules, required CI checks and code owners are described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 See [docs/future-improvements.md](docs/future-improvements.md) for intentionally deferred repository and product decisions.
