@@ -1,13 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A modern, production-ready React and Vite boilerplate."
+      content="Portal de pedidos da DistriLux: carteira, limite de crédito e pedidos num só lugar, sincronizados com o ERP."
     />
-    <title>Vite Boilerplate</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>DistriLux · Portal de Pedidos</title>
+    <script>
+      // Applies the theme before the page is drawn, so it never flashes the
+      // wrong one. Same rule as src/shared/lib/theme.ts: the person's stored
+      // choice wins; without one, the system preference.
+      (function () {
+        var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        try {
+          var stored = localStorage.getItem("distrilux-theme");
+          if (stored === "dark" || stored === "light") {
+            dark = stored === "dark";
+          }
+        } catch (error) {
+          // Without storage, the system preference stays.
+        }
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

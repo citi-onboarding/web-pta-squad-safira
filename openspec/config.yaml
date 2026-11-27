@@ -11,6 +11,20 @@ context: |
   Every specified scenario must be converted into an automated test
   by the developer before implementation.
 
+  Domain: DistriLux is an electrical materials distributor in Recife that
+  sells on credit to about 120 companies in eight Northeast states. This
+  repository is the web portal of its internal order system: sellers find
+  clients of their own portfolio and build orders; the sales manager sees
+  every client, the dashboard, contracts and clients at risk of churn; the
+  finance person approves orders above the credit limit; the administrator
+  manages users and the ERP synchronization. The portal talks only to its
+  own API, never to the ERP. Money comes in cents and is shown as
+  R$ 1.234,56; the available credit can be negative. Permissions are
+  enforced by the server from the signed-in user. Business rules (RN-01 to
+  RN-20) come from the PRD "DistriLux Portal de Pedidos"; the visual
+  standard is DESIGN.md at the repository root.
+  Interface text is in Brazilian Portuguese.
+
 rules:
   proposal:
     - Explain the impact on business, security, and the API contract.

@@ -8,6 +8,11 @@ export const envSchema = z.object({
     .default("DistriLux Portal de Pedidos"),
   VITE_APP_URL: z.url().default("http://localhost:5173"),
   VITE_API_URL: z.url().default("http://localhost:3001"),
+  // Shows the prototype controls on the sign-in screen. Only for demo builds.
+  VITE_DEMO_MODE: z
+    .enum(["true", "false", ""])
+    .default("false")
+    .transform((value) => value === "true"),
 });
 
 export type Env = z.infer<typeof envSchema>;

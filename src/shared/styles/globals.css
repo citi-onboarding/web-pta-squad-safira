@@ -1,27 +1,144 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
 
+/* Tailwind's dark: variant follows the .dark class set by the theme switch. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Values come from DESIGN.md ("DistriLux — Brand guidelines 1.0").
+ * Components use only the semantic names below, never raw colors.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette */
+  --marinho: #0e2a5c;
+  --capibaribe: #1d4fb8;
+  --celeste: #3e8bf0;
+  --bruma: #bcd3f5;
+  --porcelana: #f1f5fc;
+  --nevoa: #d6dfee;
+  --ardosia: #4a5a78;
+  --pitanga: #c62839;
+
+  /* Light theme */
+  --background: var(--porcelana);
+  --surface: #ffffff;
+  --foreground: var(--marinho);
+  --muted: var(--ardosia);
+  --border: var(--nevoa);
+  --input: #7c8ba8; /* field outline: Névoa is too faint for 3:1 on white */
+  --primary: var(--capibaribe);
+  --primary-fg: var(--porcelana);
+  --highlight: var(--bruma);
+  --highlight-fg: var(--marinho);
+  --disabled: var(--nevoa);
+  --disabled-fg: var(--ardosia);
+  --danger: var(--pitanga);
+  --danger-surface: #fce6e9;
+  --focus: var(--capibaribe);
+  --glow: var(--celeste);
+  --brand-panel: var(--marinho);
+  --brand-panel-fg: var(--porcelana);
+  --overlay: rgb(14 42 92 / 0.55);
+
+  /* Native controls (select list, scrollbars, autofill) follow the theme. */
+  color-scheme: light;
+}
+
+.dark {
+  /* Derived values (not in the brand guide) are checked for AA in DESIGN.md. */
+  --background: var(--marinho);
+  --surface: #142f63;
+  --foreground: var(--porcelana);
+  --muted: #a9bcdb;
+  --border: #2c4677;
+  --input: #6f86b3;
+  --primary: var(--bruma);
+  --primary-fg: var(--marinho);
+  --highlight: #1d3e78;
+  --highlight-fg: var(--porcelana);
+  --disabled: #23406f;
+  --disabled-fg: #8fa3c6;
+  --danger: #ff8c96;
+  --danger-surface: #3b1b3a;
+  --focus: var(--bruma);
+  --overlay: rgb(4 14 33 / 0.7);
+
+  color-scheme: dark;
 }
 
 @theme inline {
+  --color-marinho: var(--marinho);
+  --color-capibaribe: var(--capibaribe);
+  --color-celeste: var(--celeste);
+  --color-bruma: var(--bruma);
+  --color-porcelana: var(--porcelana);
+  --color-nevoa: var(--nevoa);
+  --color-ardosia: var(--ardosia);
+  --color-pitanga: var(--pitanga);
+
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-highlight: var(--highlight);
+  --color-highlight-fg: var(--highlight-fg);
+  --color-disabled: var(--disabled);
+  --color-disabled-fg: var(--disabled-fg);
+  --color-danger: var(--danger);
+  --color-danger-surface: var(--danger-surface);
+  --color-focus: var(--focus);
+  --color-glow: var(--glow);
+  --color-brand-panel: var(--brand-panel);
+  --color-brand-panel-fg: var(--brand-panel-fg);
+  --color-overlay: var(--overlay);
+
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* 4 px corners, like the edge of a tile */
+  --radius-tile: 4px;
+
+  /* Screen type scale (the guide's scale is in pt, for print) */
+  --text-title-1: 2rem;
+  --text-title-1--line-height: 2.5rem;
+  --text-title-2: 1.5rem;
+  --text-title-2--line-height: 2rem;
+  --text-title-3: 1rem;
+  --text-title-3--line-height: 1.5rem;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Soft Celeste glow on the tile wires, on screen only (DESIGN.md, "Brand assets"). */
+@utility tile-glow {
+  filter: drop-shadow(0 0 2px rgb(62 139 240 / 0.85))
+    drop-shadow(0 0 6px rgb(62 139 240 / 0.4));
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
   }
-}
 
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  background: var(--background);
-  color: var(--foreground);
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100dvh; /* the phone's address bar does not cut the screen */
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
 }

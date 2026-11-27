@@ -9,3 +9,6 @@ test-results
 # makes `format:check` fail after every regeneration.
 .agents/skills/openspec-*
 .claude/skills/openspec-*
+
+# Local cache of the impeccable design skill (ignored by Git)
+.impeccable/

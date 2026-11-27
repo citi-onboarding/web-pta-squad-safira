@@ -21,8 +21,9 @@ Skip it for routine implementation details, formatting choices, or a local and r
 
 ## Index
 
-| Number | Title | Status | Superseded by |
-| ------ | ----- | ------ | ------------- |
+| Number                              | Title                                           | Status   | Superseded by |
+| ----------------------------------- | ----------------------------------------------- | -------- | ------------- |
+| [ADR-001](ADR-001-design-system.md) | Design system of the portal and the manager app | Proposed | —             |
 
 <!--
 Add one row per ADR, newest first.
