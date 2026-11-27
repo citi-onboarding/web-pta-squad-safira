@@ -29,21 +29,21 @@ describe("ThemeSwitch", () => {
     ).toBeInTheDocument();
   });
 
+  // ON/OFF is drawn by CSS, so the test reads the state the drawing follows.
   it("reads ON while the light theme is on and OFF in the dark theme", () => {
     const { unmount } = render(<ThemeSwitch />);
-    expect(
-      screen.getByRole("button", { name: "Ativar tema escuro" }),
-    ).toHaveTextContent("ON");
-    expect(
-      screen.getByRole("button", { name: "Ativar tema escuro" }),
-    ).toHaveAttribute("title", "Ativar tema escuro");
+    const lightSwitch = screen.getByRole("button", {
+      name: "Ativar tema escuro",
+    });
+    expect(lightSwitch).toHaveAttribute("data-light", "on");
+    expect(lightSwitch).toHaveAttribute("title", "Ativar tema escuro");
     unmount();
 
     document.documentElement.classList.add("dark");
     render(<ThemeSwitch />);
     expect(
       screen.getByRole("button", { name: "Ativar tema claro" }),
-    ).toHaveTextContent("OFF");
+    ).toHaveAttribute("data-light", "off");
   });
 
   it("changes the theme at once, renames itself and keeps the choice", async () => {

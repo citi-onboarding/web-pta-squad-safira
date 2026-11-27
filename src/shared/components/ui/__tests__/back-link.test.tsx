@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactNode } from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import { BackLink } from "../back-link";
 
-function renderAt(ui: React.ReactNode) {
+function renderAt(ui: ReactNode) {
   return render(
     <MemoryRouter initialEntries={["/clientes/C0012"]}>
       <Routes>

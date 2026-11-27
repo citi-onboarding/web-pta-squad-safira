@@ -11,6 +11,28 @@ import type { Session } from "../types/session";
 import { DemoControls } from "./demo-controls";
 import type { SimulatedState } from "./demo-controls";
 
+type FieldErrors = { email?: string; senha?: string };
+
+// A simple shape check; the back end decides whether the account exists.
+const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// The portal checks the fields itself instead of the browser's balloon,
+// which cannot be styled and looks different in every browser.
+function checkFields(email: string, senha: string): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (!email.trim()) {
+    errors.email = "Preencha o e-mail.";
+  } else if (!EMAIL_SHAPE.test(email.trim())) {
+    errors.email = "Digite um e-mail válido, como nome@distrilux.com.br.";
+  }
+  if (!senha) {
+    errors.senha = "Preencha a senha.";
+  }
+
+  return errors;
+}
+
 type LoginFormProps = {
   onSignedIn: (session: Session) => void;
   // Shows the prototype controls (demo builds only).
@@ -20,6 +42,7 @@ type LoginFormProps = {
 export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
   const signIn = useSignIn();
   const [simulated, setSimulated] = useState<SimulatedState>("normal");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const credentialsRejected =
     signIn.error instanceof ApiError && signIn.error.status === 401;
   const showError =
@@ -34,22 +57,37 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
     }
 
     const data = new FormData(event.currentTarget);
+    const email = String(data.get("email") ?? "");
+    const senha = String(data.get("senha") ?? "");
+    const errors = checkFields(email, senha);
+    setFieldErrors(errors);
+
+    if (errors.email || errors.senha) {
+      signIn.reset();
+      return;
+    }
+
     signIn.mutate(
-      {
-        email: String(data.get("email")),
-        senha: String(data.get("senha")),
-      },
+      { email: email.trim(), senha },
       { onSuccess: (session) => onSignedIn(session) },
+    );
+  }
+
+  function clearFieldError(field: keyof FieldErrors) {
+    setFieldErrors((current) =>
+      current[field] ? { ...current, [field]: undefined } : current,
     );
   }
 
   function handleSimulate(state: SimulatedState) {
     signIn.reset();
+    setFieldErrors({});
     setSimulated(state);
   }
 
   return (
     <form
+      noValidate
       onSubmit={handleSubmit}
       className="flex w-full max-w-sm flex-col gap-4"
     >
@@ -71,6 +109,8 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
         autoComplete="username"
         required
         invalid={showError}
+        error={fieldErrors.email}
+        onChange={() => clearFieldError("email")}
       />
       <TextField
         label="Senha"
@@ -79,6 +119,8 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
         autoComplete="current-password"
         required
         invalid={showError}
+        error={fieldErrors.senha}
+        onChange={() => clearFieldError("senha")}
       />
 
       <Button type="submit" loading={pending} className="mt-2">

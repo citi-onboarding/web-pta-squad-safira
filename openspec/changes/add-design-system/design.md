@@ -24,7 +24,7 @@ Tokens live in `src/shared/styles/globals.css` with semantic names (`--color-sur
 
 - The theme is applied by the `dark` class on the root element (shadcn convention, works with Tailwind's `dark:` variant).
 - Without a stored choice, the theme follows `prefers-color-scheme`.
-- The switch is an on/off switch, like a light switch: it reads "ON" in the light theme (the light is on) and "OFF" in the dark theme. It stays a button named after what it does ("Ativar tema escuro" / "Ativar tema claro"), with the same text as a tooltip, so the ON/OFF metaphor never has to be guessed. It sits on the form side of the sign-in screen (top-right corner) and next to the user menu in the header, never on the brand panel.
+- The switch is an on/off switch, like a light switch: it reads "ON" in the light theme (the light is on) and "OFF" in the dark theme. It stays a button named after what it does ("Ativar tema escuro" / "Ativar tema claro"), with the same text as a tooltip, so the ON/OFF metaphor never has to be guessed. ON/OFF is drawn with CSS generated content, not written as text: visible text inside a button must be part of its accessible name (WCAG 2.5.3, flagged by axe), and here the name describes the action. It sits on the form side of the sign-in screen (top-right corner) and next to the user menu in the header, never on the brand panel.
 - The choice is stored in `localStorage`. Reads and writes are wrapped in `try/catch`; when storage is unavailable the app falls back to the system preference.
 - A small inline script in `index.html` applies the class before React renders, so the page does not flash the wrong theme.
 - The theme is client-only state; it does not go through TanStack Query.

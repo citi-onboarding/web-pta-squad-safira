@@ -41,9 +41,9 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 3.8 Style the application shell
 - [x] 3.9 Add `VITE_DEMO_MODE` to the env schema and `.env.example` (default `false`)
 - [x] 3.10 Add the "Simular" controls behind `VITE_DEMO_MODE`
-- [ ] 3.12 Turn off the browser validation balloon and add the sign-in field checks
-- [ ] 3.13 Theme switch with ON/OFF
-- [ ] 3.14 Add the back link component
+- [x] 3.12 Turn off the browser validation balloon and add the sign-in field checks
+- [x] 3.13 Theme switch with ON/OFF
+- [x] 3.14 Add the back link component
 - [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE` (after open question 1)
 
 ## 4. Refactor
