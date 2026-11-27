@@ -37,6 +37,11 @@ export function AppShell() {
         >
           Sair
         </button>
+        {signOut.isError ? (
+          <p role="alert" className="text-sm text-red-700">
+            Não foi possível sair. Tente novamente.
+          </p>
+        ) : null}
       </nav>
       <main className="flex-1 p-6">
         <Outlet />

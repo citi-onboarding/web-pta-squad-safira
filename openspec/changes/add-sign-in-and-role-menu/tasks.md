@@ -44,3 +44,10 @@
 - [x] 6.2 Run `pnpm format:check`, `pnpm verify` (includes typecheck, lint, tests, and `openspec validate --strict`), `pnpm test:coverage`, and `pnpm build`
 - [x] 6.3 Write `docs/changes/add-sign-in-and-role-menu.md` from `docs/templates/change.md` and evaluate the ADR candidate from `design.md`
 - [ ] 6.4 Open the pull request to `develop` listing the provisional decisions and open questions
+
+## 7. Review of pull request #10
+
+- [x] 7.1 Update the spec, design, and open questions for the accepted suggestions: generic sign-in failure message, sign-out failure message, "Carregando..." and failed session check on protected pages, and `/` redirect
+- [x] 7.2 Red: developer writes the failing tests and runs them
+- [x] 7.3 Green: minimal production code; update `router.test.tsx`, `providers.test.tsx`, and `e2e/application.spec.ts` only where they asserted the boilerplate home page
+- [x] 7.4 Refactor, all gates, and the change summary

@@ -208,3 +208,19 @@ test("after signing out, the browser back button shows no data", async ({
     page.getByRole("heading", { level: 1, name: "Clientes" }),
   ).toHaveCount(0);
 });
+
+test("the root address leads to the sign-in screen, then to the role's initial page", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page).toHaveURL("/entrar");
+
+  await signIn(page, "fernanda@distrilux.test");
+
+  await expect(page).toHaveURL("/painel");
+  await page.goto("/");
+  await expect(page).toHaveURL("/painel");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Painel do comercial" }),
+  ).toBeVisible();
+});

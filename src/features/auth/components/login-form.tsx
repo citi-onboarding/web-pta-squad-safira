@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { ApiError } from "@/shared/lib/api/errors";
 
 import { useSignIn } from "../queries/sign-in-mutation";
+import { SIGN_IN_FAILURE_MESSAGE } from "../types/auth-messages";
 import type { Session } from "../types/session";
 
 type LoginFormProps = {
@@ -14,8 +15,11 @@ export function LoginForm({ onSignedIn }: LoginFormProps) {
   const emailId = useId();
   const passwordId = useId();
   const signIn = useSignIn();
-  const credentialsRejected =
-    signIn.error instanceof ApiError && signIn.error.status === 401;
+  const errorMessage = !signIn.error
+    ? null
+    : signIn.error instanceof ApiError && signIn.error.status === 401
+      ? "E-mail ou senha incorretos"
+      : SIGN_IN_FAILURE_MESSAGE;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,9 +74,9 @@ export function LoginForm({ onSignedIn }: LoginFormProps) {
         />
       </div>
 
-      {credentialsRejected ? (
+      {errorMessage ? (
         <p role="alert" className="text-sm text-red-700">
-          E-mail ou senha incorretos
+          {errorMessage}
         </p>
       ) : null}
 

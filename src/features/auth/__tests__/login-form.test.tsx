@@ -164,4 +164,24 @@ describe("LoginForm", () => {
       sessionsByRole.VENDEDOR,
     );
   });
+
+  it.each([
+    [
+      "an error status other than 401",
+      () => HttpResponse.json({}, { status: 503 }),
+    ],
+    ["no connection", () => HttpResponse.error()],
+  ])("shows the generic failure message for %s", async (_case, answer) => {
+    server.use(http.post(`${API_URL}/auth/login`, answer));
+    const onSignedIn = vi.fn();
+    renderWithAuth(<LoginForm onSignedIn={onSignedIn} />);
+
+    await fillAndSubmit(EMAIL, PASSWORD);
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Não foi possível entrar. Tente novamente.",
+    );
+    expect(screen.getByRole("button", { name: "Entrar" })).toBeEnabled();
+    expect(onSignedIn).not.toHaveBeenCalled();
+  });
 });

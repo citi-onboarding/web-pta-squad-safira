@@ -80,7 +80,8 @@ The `auth` feature exposes `createAuthApiClient()`, which calls `createBrowserAp
 *                       NotFoundPage (unchanged)
 ```
 
-- `ProtectedRoute` renders nothing while the session query is pending, so no protected content flashes before the answer.
+- `ProtectedRoute` shows "Carregando..." while the session query is pending, so no protected content flashes before the answer; when the query fails (not a 401, which resolves to "no session"), it shows the generic sign-in failure message instead of redirecting.
+- `/` is a child of `ProtectedRoute` that redirects to the role's initial page (`RoleHomeRedirect`); without a session, `ProtectedRoute` sends the visitor to `/entrar`, and after sign-in `/` resolves to the initial page. The boilerplate `HomePage` is no longer routed; `src/app/router.test.tsx` and `e2e/application.spec.ts` are updated only where they asserted that page.
 - After sign-in, the login page navigates to `state.from` when present and not `/entrar`; otherwise to the role's initial page. If `state.from` is outside the role, the access-denied message appears there, as the spec requires.
 - `ProtectedRoute`, `RoleRoute`, and the access-denied message live in `src/features/auth/components/`; `AppShell` and the pages live in `src/app/`.
 - The `/` and `*` routes keep their current pages, so `router.test.tsx` and `e2e/application.spec.ts` stay as they are.
