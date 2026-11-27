@@ -21,7 +21,7 @@ A wall of Recife tiles drawn with power distribution cables: bundles of three wi
 
 - Components come from shadcn/ui, generated into `src/shared/components/ui/` (ADR-001). The manager app uses the same token values through `mobile-pta-squad-safira/src/styles/tokens.json`.
 - Two themes, light and dark. Without a stored choice the portal follows the system; the theme switch changes it and the choice is kept in the browser.
-- Theme switch: an icon button with an accessible name that says what it does ("Ativar tema escuro" / "Ativar tema claro"). On the sign-in screen, top-right corner of the form side, never on the brand panel. In the signed-in area, next to the user menu.
+- Theme switch: an on/off switch (4 px corners, knob with a sun in the light theme and a moon in the dark one, sliding to the right in the dark theme). It is a button with an accessible name that says what it does ("Ativar tema escuro" / "Ativar tema claro"). On the sign-in screen, top-right corner of the form side, never on the brand panel. In the signed-in area, next to the user menu.
 
 ## Palette
 
@@ -45,18 +45,22 @@ Components use semantic tokens only, never raw hex values.
 | Token                    | Light                | Dark                             |
 | ------------------------ | -------------------- | -------------------------------- |
 | `--color-background`     | Porcelana `#F1F5FC`  | Marinho `#0E2A5C`                |
-| `--color-surface`        | `#FFFFFF`            | TBD (derived, check AA)          |
+| `--color-surface`        | `#FFFFFF`            | `#142F63`                        |
 | `--color-foreground`     | Marinho `#0E2A5C`    | Porcelana `#F1F5FC`              |
-| `--color-muted`          | Ardósia `#4A5A78`    | TBD (derived, check AA)          |
-| `--color-border`         | Névoa `#D6DFEE`      | TBD (derived, check AA)          |
+| `--color-muted`          | Ardósia `#4A5A78`    | `#A9BCDB`                        |
+| `--color-border`         | Névoa `#D6DFEE`      | `#2C4677`                        |
 | `--color-primary`        | Capibaribe `#1D4FB8` | Bruma `#BCD3F5`                  |
 | `--color-primary-fg`     | Porcelana `#F1F5FC`  | Marinho `#0E2A5C`                |
-| `--color-highlight`      | Bruma `#BCD3F5`      | TBD (derived, check AA)          |
+| `--color-highlight`      | Bruma `#BCD3F5`      | `#1D3E78`                        |
 | `--color-glow`           | Celeste `#3E8BF0`    | Celeste `#3E8BF0`                |
 | `--color-danger`         | Pitanga `#C62839`    | `#FF8C96`                        |
-| `--color-danger-surface` | `#FCE6E9`            | TBD (derived, check AA)          |
-| `--color-focus`          | Capibaribe `#1D4FB8` | TBD (derived, check AA)          |
+| `--color-danger-surface` | `#FCE6E9`            | `#3B1B3A`                        |
+| `--color-focus`          | Capibaribe `#1D4FB8` | Bruma `#BCD3F5`                  |
 | `--color-brand-panel`    | Marinho `#0E2A5C`    | Marinho `#0E2A5C` (same in both) |
+
+Field outlines use `--color-input`: `#7C8BA8` (light) and `#6F86B3` (dark). Névoa is too faint for the 3:1 a field outline needs (1.3:1 on white), so it stays for dividers and table lines.
+
+The dark values not given by the brand guide were derived from the palette and checked: text 11.9:1, secondary text 6.7:1, primary button 9.2:1, error text 6.7:1, focus ring 9.2:1, field outline 3.5:1.
 
 All text/background pairs must reach WCAG AA contrast in both themes. Switch themes only through tokens, never with `dark:` classes on raw colors.
 
@@ -67,17 +71,19 @@ All text/background pairs must reach WCAG AA contrast in both themes. Switch the
 - Uppercase only in small captions of numbers ("CRÉDITO DISPONÍVEL"), without extra letter spacing. Every other label uses sentence case ("Crédito disponível").
 - The logo is never typed: always the SVG file (it is drawn from Eurostile Extended, used nowhere else).
 
-| Role    | Guide (print)             | Screen |
-| ------- | ------------------------- | ------ |
-| Title 1 | 40/44 pt Bold             | TBD    |
-| Title 2 | 24/28 pt Bold             | TBD    |
-| Title 3 | 14/18 pt Medium           | TBD    |
-| Body    | 10/14 pt Regular          | TBD    |
-| Caption | 7.5/10 pt Bold, uppercase | TBD    |
+| Role    | Guide (print)             | Screen (token)                     |
+| ------- | ------------------------- | ---------------------------------- |
+| Title 1 | 40/44 pt Bold             | 32/40 px Bold (`text-title-1`)     |
+| Title 2 | 24/28 pt Bold             | 24/32 px Bold (`text-title-2`)     |
+| Title 3 | 14/18 pt Medium           | 16/24 px Semibold (`text-title-3`) |
+| Body    | 10/14 pt Regular          | 15/24 px Regular (`text-body`)     |
+| Caption | 7.5/10 pt Bold, uppercase | 12/16 px Semibold (`text-caption`) |
+
+The guide's sizes are in pt, for print; the screen scale keeps its hierarchy and weights at sizes readable on a phone.
 
 ## Spacing, shape and density
 
-- Corners: 4 px on buttons, fields and chips, like the edge of a tile.
+- Corners: 4 px on buttons, fields and chips, like the edge of a tile (`rounded-tile`).
 - Height: buttons and fields from 40 to 48 px, comfortable touch area on the phone.
 - Focus: 2 px Azul Capibaribe outline, always visible with the keyboard.
 - Spacing scale: multiples of 4 px, constant across screens.

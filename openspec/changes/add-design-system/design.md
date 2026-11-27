@@ -9,7 +9,7 @@
 
 ### D1. shadcn/ui as the portal's component foundation
 
-Components are generated with the shadcn CLI and committed. `components.json` points the aliases to the project layers:
+Components follow the shadcn/ui source (new-york-v4) and are committed. The shadcn registry site was not reachable from the development environment, so the source was taken from the shadcn GitHub repository, the same code the CLI copies; `components.json` is in place for later `shadcn add` runs. `components.json` points the aliases to the project layers:
 
 - `ui` → `@/shared/components/ui`
 - `utils` → `@/shared/lib/cn` (the `cn()` helper that merges Tailwind classes)

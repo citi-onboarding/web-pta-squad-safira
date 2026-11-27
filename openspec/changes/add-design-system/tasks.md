@@ -27,16 +27,16 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 
 ## 3. Green (minimal production code)
 
-- [ ] 3.1 Run `shadcn init` with `components.json` aliases `@/shared/components/ui` and `@/shared/lib/cn`
-- [ ] 3.2 Add the tokens from `DESIGN.md` (light on `:root`, dark on `.dark`) and the Inter font to `src/shared/styles/globals.css`; derive the missing dark values and check them
-- [ ] 3.3 Add the money formatter in `src/shared/lib/`
-- [ ] 3.4 Add button, text field, select, table, card, status chip, banner and modal with the shadcn CLI and adapt them to the tokens
-- [ ] 3.5 Add loading, empty, error with "Tentar de novo" and the sync indicator
-- [ ] 3.6 Add the theme logic, the theme switch and the inline script in `index.html`
-- [ ] 3.7 Redo the sign-in screen with the components, the brand panel and the theme switch
-- [ ] 3.8 Style the application shell
-- [ ] 3.9 Add `VITE_DEMO_MODE` to the env schema and `.env.example` (default `false`)
-- [ ] 3.10 Add the "Simular" controls behind `VITE_DEMO_MODE`
+- [x] 3.1 Run `shadcn init` with `components.json` aliases `@/shared/components/ui` and `@/shared/lib/cn`
+- [x] 3.2 Add the tokens from `DESIGN.md` (light on `:root`, dark on `.dark`) and the Inter font to `src/shared/styles/globals.css`; derive the missing dark values and check them
+- [x] 3.3 Add the money formatter in `src/shared/lib/`
+- [x] 3.4 Add button, text field, select, table, card, status chip, banner and modal with the shadcn CLI and adapt them to the tokens
+- [x] 3.5 Add loading, empty, error with "Tentar de novo" and the sync indicator
+- [x] 3.6 Add the theme logic, the theme switch and the inline script in `index.html`
+- [x] 3.7 Redo the sign-in screen with the components, the brand panel and the theme switch
+- [x] 3.8 Style the application shell
+- [x] 3.9 Add `VITE_DEMO_MODE` to the env schema and `.env.example` (default `false`)
+- [x] 3.10 Add the "Simular" controls behind `VITE_DEMO_MODE`
 - [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE` (after open question 1)
 
 ## 4. Refactor
