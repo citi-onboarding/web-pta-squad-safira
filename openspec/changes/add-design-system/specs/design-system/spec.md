@@ -98,6 +98,20 @@ Tables SHALL have a header row naming each column and SHALL align money and othe
 - **WHEN** the same list is shown at 390 px width
 - **THEN** each client appears as a stacked card with the same information and nothing needs horizontal scrolling
 
+### Requirement: Back links
+
+Inner screens SHALL offer a link back to the screen they came from, written as an arrow followed by the destination (for example "← Clientes") and announced to screen readers as "Voltar para" followed by the destination. Without a destination name, the link SHALL read "← Voltar".
+
+#### Scenario: Back to the client list
+
+- **WHEN** a screen offers a way back to the client list
+- **THEN** it shows "← Clientes", announced as "Voltar para Clientes", and it opens the client list
+
+#### Scenario: Back without a destination name
+
+- **WHEN** a screen offers a way back without naming the destination
+- **THEN** it shows "← Voltar", announced as "Voltar"
+
 ### Requirement: Messages
 
 The portal SHALL show information and error messages with an icon and text. Error messages SHALL be announced to screen readers as soon as they appear.
@@ -197,6 +211,11 @@ The portal SHALL offer a light and a dark theme. Without a stored choice it SHAL
 - **WHEN** the user reaches the theme switch with Tab and presses Space or Enter
 - **THEN** the theme changes
 
+#### Scenario: The switch shows whether the light is on
+
+- **WHEN** the portal is in the light theme
+- **THEN** the switch reads "ON", and in the dark theme it reads "OFF"
+
 #### Scenario: Switch on the sign-in screen
 
 - **WHEN** a visitor opens the sign-in screen
@@ -242,6 +261,30 @@ When the back end rejects the credentials, the sign-in screen SHALL show an aler
 
 - **WHEN** the back end rejects the credentials
 - **THEN** the screen shows the alert "E-mail ou senha incorretos." and both the email and the password fields are marked as invalid
+
+### Requirement: Sign-in fields are checked before sending
+
+The sign-in screen SHALL check the fields itself, in the portal's own style, before sending anything: an empty email shows "Preencha o e-mail.", an empty password shows "Preencha a senha.", and an email that is not valid shows "Digite um e-mail válido, como nome@distrilux.com.br.". Each message SHALL appear under its field, mark that field invalid, and no request SHALL be sent to the back end.
+
+#### Scenario: Empty email
+
+- **WHEN** the visitor presses the sign-in button with the email empty and the password filled
+- **THEN** the email field shows "Preencha o e-mail." and is marked invalid, and no request is sent
+
+#### Scenario: Both fields empty
+
+- **WHEN** the visitor presses the sign-in button with both fields empty
+- **THEN** the email field shows "Preencha o e-mail." and the password field shows "Preencha a senha."
+
+#### Scenario: Email that is not valid
+
+- **WHEN** the visitor writes "ana.distrilux.com.br" as the email and presses the sign-in button
+- **THEN** the email field shows "Digite um e-mail válido, como nome@distrilux.com.br." and no request is sent
+
+#### Scenario: Messages go away once the fields are right
+
+- **WHEN** the visitor fixes the fields and presses the sign-in button again
+- **THEN** the field messages disappear and the sign-in request is sent
 
 ### Requirement: Sign-in in progress label
 

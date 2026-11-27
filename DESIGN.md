@@ -209,7 +209,7 @@ A wall of Recife tiles drawn with power distribution cables: bundles of three wi
 - It is an internal work tool: clarity and speed come before decoration.
 - Components come from shadcn/ui, kept in `src/shared/components/ui/` (ADR-001). The manager app uses the same token values in its own token file (`src/styles/tokens.json` in the `mobile-pta-squad-safira` repository).
 - Two themes, light and dark. Without a stored choice the portal follows the system; the theme switch changes it and the choice is kept in the browser. In code, the light values live on `:root` and the dark ones (the `dark-*` tokens) on `.dark`, in `src/shared/styles/globals.css`.
-- Theme switch: an on/off switch (4 px corners, knob with a sun in the light theme and a moon in the dark one, sliding to the right in the dark theme). It is a button with an accessible name that says what it does ("Ativar tema escuro" / "Ativar tema claro"). On the sign-in screen, top-right corner of the form side, never on the brand panel. In the signed-in area, next to the user menu.
+- Theme switch: an on/off switch, like a light switch (DistriLux is light). The knob reads "ON" in the light theme (the light is on) and "OFF" in the dark theme, sliding to the right; 4 px corners. It is a button with an accessible name that says what it does ("Ativar tema escuro" / "Ativar tema claro"), also shown as a tooltip. On the sign-in screen, top-right corner of the form side, never on the brand panel. In the signed-in area, next to the user menu.
 
 ## Colors
 
@@ -323,6 +323,7 @@ Live in `src/shared/components/ui/`. Features and screens use them; they never r
 - **Table:** header row, numeric columns aligned right with tabular figures; on 390 px rows become stacked cards (as in the prototype).
 - **Modal:** darkened backdrop, title, cancel and action buttons; Esc closes it; focus stays inside and returns to the trigger.
 - **ERP sync indicator (header):** "Sincronizado com o ERP em 19/11/2026 14:02" with a check icon, or "ERP fora do ar · dados de 19/11/2026 14:02" with a warning icon. The prototype's green dot becomes an icon: there is no green.
+- **Back link:** an arrow and the destination ("← Clientes", "← Voltar"), announced as "Voltar para Clientes". Used at the top of inner screens.
 - **Theme switch:** see Overview.
 
 ### States
@@ -382,6 +383,7 @@ Files in `src/shared/assets/brand/`. Use them as they are; never redraw or retyp
 - Brand panel on the left, in Marinho: logo in Porcelana with the light on "LUX", a strip of tiles from top to bottom (Louça, soft glow), the title "Portal de pedidos da DistriLux", the text "Carteira, limite de crédito e pedidos num só lugar, sincronizados com o ERP" and the signature "DistriLux Materiais Elétricos · Recife". The panel does not change with the theme.
 - Form on the right: "Entrar no portal", "Use o e-mail e a senha da DistriLux.", E-mail, Senha, Entrar.
 - Error: alert "E-mail ou senha incorretos." with icon and Pitanga outline, and both fields with a red border, never saying which one is wrong.
+- Field checks: the portal checks the fields itself, never with the browser's balloon. Messages under the field, with icon and Pitanga border: "Preencha o e-mail.", "Preencha a senha.", "Digite um e-mail válido, como nome@distrilux.com.br.".
 - Signing in: the button reads "Entrando…" and is disabled until the answer.
 - Prototype shortcuts ("Gerente comercial", "Financeiro") and "Simular Normal / Erro / Entrando": only in demo mode (`VITE_DEMO_MODE=true`), below a divider. The normal build does not show them.
 

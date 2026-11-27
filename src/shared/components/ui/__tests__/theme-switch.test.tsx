@@ -29,6 +29,23 @@ describe("ThemeSwitch", () => {
     ).toBeInTheDocument();
   });
 
+  it("reads ON while the light theme is on and OFF in the dark theme", () => {
+    const { unmount } = render(<ThemeSwitch />);
+    expect(
+      screen.getByRole("button", { name: "Ativar tema escuro" }),
+    ).toHaveTextContent("ON");
+    expect(
+      screen.getByRole("button", { name: "Ativar tema escuro" }),
+    ).toHaveAttribute("title", "Ativar tema escuro");
+    unmount();
+
+    document.documentElement.classList.add("dark");
+    render(<ThemeSwitch />);
+    expect(
+      screen.getByRole("button", { name: "Ativar tema claro" }),
+    ).toHaveTextContent("OFF");
+  });
+
   it("changes the theme at once, renames itself and keeps the choice", async () => {
     render(<ThemeSwitch />);
 

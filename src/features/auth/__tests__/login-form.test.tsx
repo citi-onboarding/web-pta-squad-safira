@@ -175,6 +175,71 @@ describe("LoginForm", () => {
   });
 });
 
+describe("LoginForm field checks", () => {
+  function countLoginRequests() {
+    const counter = { requests: 0 };
+    server.use(
+      http.post(`${API_URL}/auth/login`, () => {
+        counter.requests += 1;
+        return HttpResponse.json(sessionsByRole.VENDEDOR);
+      }),
+    );
+    return counter;
+  }
+
+  it("asks for the email in the portal's style when it is empty", async () => {
+    const counter = countLoginRequests();
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
+
+    await fillAndSubmit("", PASSWORD);
+
+    const email = screen.getByLabelText("E-mail");
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(email).toHaveAccessibleDescription("Preencha o e-mail.");
+    expect(screen.getByLabelText("Senha")).not.toHaveAttribute("aria-invalid");
+    expect(counter.requests).toBe(0);
+  });
+
+  it("asks for both fields when both are empty", async () => {
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
+
+    await fillAndSubmit("", "");
+
+    expect(screen.getByLabelText("E-mail")).toHaveAccessibleDescription(
+      "Preencha o e-mail.",
+    );
+    expect(screen.getByLabelText("Senha")).toHaveAccessibleDescription(
+      "Preencha a senha.",
+    );
+  });
+
+  it("asks for a valid email when the one written is not valid", async () => {
+    const counter = countLoginRequests();
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
+
+    await fillAndSubmit("ana.distrilux.com.br", PASSWORD);
+
+    expect(screen.getByLabelText("E-mail")).toHaveAccessibleDescription(
+      "Digite um e-mail válido, como nome@distrilux.com.br.",
+    );
+    expect(counter.requests).toBe(0);
+  });
+
+  it("removes the messages and signs in once the fields are right", async () => {
+    const counter = countLoginRequests();
+    renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);
+
+    const user = await fillAndSubmit("", "");
+    await user.type(screen.getByLabelText("E-mail"), EMAIL);
+    await user.type(screen.getByLabelText("Senha"), PASSWORD);
+    await user.click(screen.getByRole("button", { name: "Entrar" }));
+
+    expect(screen.queryByText("Preencha o e-mail.")).not.toBeInTheDocument();
+    expect(screen.queryByText("Preencha a senha.")).not.toBeInTheDocument();
+    await waitFor(() => expect(counter.requests).toBe(1));
+  });
+});
+
 describe("LoginForm in demo mode", () => {
   it("shows no prototype controls outside demo mode", () => {
     renderWithAuth(<LoginForm onSignedIn={vi.fn()} />);

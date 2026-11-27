@@ -24,6 +24,10 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 2.12 Sign-in: brand panel texts and logo name; tile hidden from screen readers; theme button on the form side; error alert with both fields invalid; "Entrando…" while pending; update FRONT-01 tests only where these change them
 - [x] 2.13 Demo mode: no shortcuts or "Simular" outside demo mode; "Simular" shown in demo mode; "Erro" and "Entrando" show their state without calling the back end (shortcut tests come with task 3.11)
 - [x] 2.14 Run `pnpm test` and confirm every new test fails for the expected reason
+- [x] 2.15 Sign-in field checks: empty email, both empty, email not valid, messages gone after fixing; no request while a field is wrong
+- [x] 2.16 Theme switch reads "ON" in the light theme and "OFF" in the dark theme, with its name as a tooltip
+- [x] 2.17 Back link: "← Clientes" announced as "Voltar para Clientes" and opening the client list; "← Voltar" without a destination name
+- [x] 2.18 Run `pnpm test` and confirm the new tests fail for the expected reason
 
 ## 3. Green (minimal production code)
 
@@ -37,6 +41,9 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 3.8 Style the application shell
 - [x] 3.9 Add `VITE_DEMO_MODE` to the env schema and `.env.example` (default `false`)
 - [x] 3.10 Add the "Simular" controls behind `VITE_DEMO_MODE`
+- [ ] 3.12 Turn off the browser validation balloon and add the sign-in field checks
+- [ ] 3.13 Theme switch with ON/OFF
+- [ ] 3.14 Add the back link component
 - [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE` (after open question 1)
 
 ## 4. Refactor

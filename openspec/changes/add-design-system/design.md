@@ -24,7 +24,7 @@ Tokens live in `src/shared/styles/globals.css` with semantic names (`--color-sur
 
 - The theme is applied by the `dark` class on the root element (shadcn convention, works with Tailwind's `dark:` variant).
 - Without a stored choice, the theme follows `prefers-color-scheme`.
-- The switch is an icon button named after what it does ("Ativar tema escuro" / "Ativar tema claro"). It sits on the form side of the sign-in screen (top-right corner) and next to the user menu in the header, never on the brand panel.
+- The switch is an on/off switch, like a light switch: it reads "ON" in the light theme (the light is on) and "OFF" in the dark theme. It stays a button named after what it does ("Ativar tema escuro" / "Ativar tema claro"), with the same text as a tooltip, so the ON/OFF metaphor never has to be guessed. It sits on the form side of the sign-in screen (top-right corner) and next to the user menu in the header, never on the brand panel.
 - The choice is stored in `localStorage`. Reads and writes are wrapped in `try/catch`; when storage is unavailable the app falls back to the system preference.
 - A small inline script in `index.html` applies the class before React renders, so the page does not flash the wrong theme.
 - The theme is client-only state; it does not go through TanStack Query.
@@ -56,7 +56,11 @@ Built on the shadcn dialog (Radix): focus trap, Esc closes, focus returns to the
 
 ### D9. Sign-in redo
 
-The redo adds the brand panel and changes markup and classes. The credential error becomes an alert at the top of the form with both fields marked invalid, and the in-progress button reads "Entrando…". Texts, fields, the 401 message and the redirection behavior from FRONT-01 stay the same. FRONT-01 tests keep passing, except the ones that check the button while signing in, which are updated to "Entrando…".
+The redo adds the brand panel and changes markup and classes. The credential error becomes an alert at the top of the form with both fields marked invalid, and the in-progress button reads "Entrando…". The browser's own validation balloon ("Preencha este campo.") cannot be styled and differs in every browser, so the form turns it off (`noValidate`) and checks the fields itself, showing the messages under each field in the portal's style. As before, nothing is sent while a field is empty. Texts, fields, the 401 message and the redirection behavior from FRONT-01 stay the same. FRONT-01 tests keep passing, except the ones that check the button while signing in, which are updated to "Entrando…".
+
+### D9.1 Back link
+
+`back-link.tsx` in `src/shared/components/ui/` wraps the router's `Link`: an arrow icon hidden from screen readers, the destination name, and a hidden "Voltar para" prefix, so the link is announced as "Voltar para Clientes". It covers the "← Clientes", "← Voltar" and "← [cliente]" links of the prototype's inner screens.
 
 ### D10. Demo mode
 
