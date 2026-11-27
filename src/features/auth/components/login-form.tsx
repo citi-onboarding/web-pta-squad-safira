@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 
 import { Banner } from "@/shared/components/ui/banner";
@@ -43,6 +43,8 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
   const signIn = useSignIn();
   const [simulated, setSimulated] = useState<SimulatedState>("normal");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const credentialsRejected =
     signIn.error instanceof ApiError && signIn.error.status === 401;
   const showError =
@@ -79,6 +81,18 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
     );
   }
 
+  // Demo shortcut: fills in the email and leaves the password to the person.
+  function handleShortcut(email: string) {
+    if (emailRef.current) {
+      emailRef.current.value = email;
+    }
+    if (passwordRef.current) {
+      passwordRef.current.value = "";
+      passwordRef.current.focus();
+    }
+    setFieldErrors({});
+  }
+
   function handleSimulate(state: SimulatedState) {
     signIn.reset();
     setFieldErrors({});
@@ -106,6 +120,7 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
         name="email"
         type="email"
         placeholder="nome@distrilux.com.br"
+        ref={emailRef}
         autoComplete="username"
         required
         invalid={showError}
@@ -116,6 +131,7 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
         label="Senha"
         name="senha"
         type="password"
+        ref={passwordRef}
         autoComplete="current-password"
         required
         invalid={showError}
@@ -128,7 +144,11 @@ export function LoginForm({ onSignedIn, demoMode = false }: LoginFormProps) {
       </Button>
 
       {demoMode ? (
-        <DemoControls state={simulated} onChange={handleSimulate} />
+        <DemoControls
+          state={simulated}
+          onChange={handleSimulate}
+          onShortcut={handleShortcut}
+        />
       ) : null}
     </form>
   );

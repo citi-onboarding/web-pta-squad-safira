@@ -45,7 +45,7 @@ Component tests live in `src/shared/components/ui/__tests__/`, one file per comp
 - [x] 3.12 Turn off the browser validation balloon and add the sign-in field checks
 - [x] 3.13 Theme switch with ON/OFF
 - [x] 3.14 Add the back link component
-- [ ] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE`
+- [x] 3.11 Add the demo shortcuts behind `VITE_DEMO_MODE`
 
 ## 4. Refactor
 

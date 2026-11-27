@@ -17,10 +17,10 @@ Give every portal screen one shared visual base (tokens, components, states and 
 ## Change made
 
 - Tokens in `src/shared/styles/globals.css`: the brand palette, semantic colors with a light and a dark value, the screen type scale, the 4 px corner and the cable glow. Values follow `DESIGN.md`, which now uses the open DESIGN.md format (YAML tokens plus sections) and passes `npx @google/design.md lint` with no errors or warnings.
-- Base components in `src/shared/components/ui/`, following the shadcn/ui source: button, text field, native select, status chip (client and order/credit statuses), banner, loading, empty and error-with-retry states, data table with stacked phone cards, card, ERP sync indicator, modal and theme switch.
+- Base components in `src/shared/components/ui/`, following the shadcn/ui source: button, text field, native select, status chip (client and order/credit statuses), banner, loading, empty and error-with-retry states, data table with stacked phone cards, card, ERP sync indicator, modal, back link and the ON/OFF theme switch.
 - Shared helpers: `formatMoney` (cents to `R$ 1.234,56`), `formatDateTime` (Recife time), theme logic, and `cn`.
 - Light and dark themes: an inline script in `index.html` applies the stored choice or the system preference before the first paint; the theme switch changes it and keeps it in the browser.
-- Sign-in screen redone with the brand panel (logo, tile strip, texts), the credential error as an alert with both fields marked invalid, "Entrando…" while waiting, and the prototype controls behind `VITE_DEMO_MODE`.
+- Sign-in screen redone with the brand panel (logo, tile strip, texts), the credential error as an alert with both fields marked invalid, the field checks in the portal's style ("Preencha o e-mail."), "Entrando…" while waiting, and the prototype controls behind `VITE_DEMO_MODE` ("Simular" and the shortcuts, which fill in only the email).
 - Application shell styled: header with logo, name and role and theme switch; menu with the current page highlighted; a select menu on the phone.
 - Brand assets in `src/shared/assets/brand/`, favicon in `public/favicon.svg`, and the template text removed from `README.md`, `index.html` and `openspec/config.yaml`.
 - The visual was polished with the `unslop` and `impeccable` skills, keeping every value from `DESIGN.md`.
@@ -44,7 +44,7 @@ Give every portal screen one shared visual base (tokens, components, states and 
 
 ## Validations executed
 
-- `pnpm test`: 42 files, 200 tests passed.
+- `pnpm test`: 43 files, 209 tests passed.
 - `pnpm test:coverage`: 97.8 % of lines; `src/shared/lib` at 100 %.
 - `pnpm typecheck` and `pnpm lint`: no errors.
 - `pnpm format:check`: all files formatted.
