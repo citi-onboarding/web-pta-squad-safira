@@ -19,11 +19,13 @@ A wall of Recife tiles drawn with power distribution cables: bundles of three wi
 
 ## Foundation
 
-- Components come from shadcn/ui, generated into `src/shared/components/ui/` (ADR-001). The manager app uses the same token values through `mobile-pta-squad-safira/src/styles/tokens.json`.
+- Components come from shadcn/ui, generated into `src/shared/components/ui/` (ADR-001). The manager app uses the same token values in its own token file (`src/styles/tokens.json` in the `mobile-pta-squad-safira` repository).
 - Two themes, light and dark. Without a stored choice the portal follows the system; the theme switch changes it and the choice is kept in the browser.
 - Theme switch: an on/off switch (4 px corners, knob with a sun in the light theme and a moon in the dark one, sliding to the right in the dark theme). It is a button with an accessible name that says what it does ("Ativar tema escuro" / "Ativar tema claro"). On the sign-in screen, top-right corner of the form side, never on the brand panel. In the signed-in area, next to the user menu.
 
-## Palette
+## Colors
+
+### Palette
 
 | Name              | Hex       | Use                                                                 |
 | ----------------- | --------- | ------------------------------------------------------------------- |
@@ -38,7 +40,7 @@ A wall of Recife tiles drawn with power distribution cables: bundles of three wi
 
 Blues, and red only for errors. Whites and grays are always bluish. No green or yellow: every other state is told apart by fill, outline, icon and text. The word always appears; color is never the only clue. Celeste and Bruma on light backgrounds have about 3:1 contrast: never use them for text there.
 
-## Tokens
+### Tokens
 
 Components use semantic tokens only, never raw hex values.
 
